@@ -1,0 +1,105 @@
+@import "tailwindcss";
+
+/*
+ * 다크 프리미엄 디자인 토큰
+ * chats-club.com 톤 참고: 짙은 네이비(#0b1a2a) 배경 + 따뜻한 골드 포인트 컬러,
+ * 넉넉한 여백, 미니멀한 타이포그래피.
+ */
+:root {
+  --color-bg: #0b1a2a;
+  --color-bg-elevated: #101f31;
+  --color-bg-elevated-2: #16283d;
+  --color-fg: #f5f7fa;
+  --color-fg-muted: #9fb0c3;
+  --color-fg-subtle: #6c7f94;
+  --color-accent: #cda05e;
+  --color-accent-soft: #e6c98a;
+  --color-accent-fg: #17130a;
+  --color-border: rgba(245, 247, 250, 0.1);
+  --color-border-strong: rgba(245, 247, 250, 0.18);
+  --color-success: #4ade80;
+  --color-danger: #f87171;
+  --color-warning: #fbbf24;
+
+  --radius-card: 1rem;
+  --radius-pill: 999px;
+
+  --shadow-card: 0 20px 60px -20px rgba(0, 0, 0, 0.6);
+  --shadow-accent: 0 12px 32px -8px rgba(205, 160, 94, 0.45);
+}
+
+@theme inline {
+  --color-bg: var(--color-bg);
+  --color-bg-elevated: var(--color-bg-elevated);
+  --color-bg-elevated-2: var(--color-bg-elevated-2);
+  --color-fg: var(--color-fg);
+  --color-fg-muted: var(--color-fg-muted);
+  --color-fg-subtle: var(--color-fg-subtle);
+  --color-accent: var(--color-accent);
+  --color-accent-soft: var(--color-accent-soft);
+  --color-accent-fg: var(--color-accent-fg);
+  --color-border: var(--color-border);
+  --color-border-strong: var(--color-border-strong);
+  --color-success: var(--color-success);
+  --color-danger: var(--color-danger);
+  --color-warning: var(--color-warning);
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+* {
+  border-color: var(--color-border);
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-accent-fg);
+}
+
+/* 은은한 스크롤바 (webkit) */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-bg-elevated-2);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-border-strong);
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-bg-elevated) 25%,
+    var(--color-bg-elevated-2) 37%,
+    var(--color-bg-elevated) 63%
+  );
+  background-size: 400% 100%;
+  animation: shimmer 1.6s ease-in-out infinite;
+}
