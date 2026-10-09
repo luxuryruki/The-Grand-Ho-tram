@@ -16,12 +16,19 @@ function formatMessage(p: ReservationNotificationPayload) {
   const lines = [
     "🔔 새 예약 요청이 도착했습니다",
     "",
-    `• 호텔 타입: ${p.hotelType}`,
+    `• 호텔: ${p.hotelName}`,
+    `• 객실: ${p.roomName ?? "미정 (상담 후 결정)"}${p.rateName && p.rateName !== p.roomName ? ` / 구성: ${p.rateName}` : ""}`,
+    p.promoEligible
+      ? `• 🎁 프로모션 적용 가능 객실${p.promoLabel ? ` (${p.promoLabel})` : ""} — 상담 시 프로모션 안내 필요`
+      : null,
     `• 체크인 → 체크아웃: ${formatDate(p.checkIn)} → ${formatDate(p.checkOut)}`,
+    p.estimatedTotal
+      ? `• 예상 요금(참고용, 확정 금액 아님): ${p.nights}박 ${new Intl.NumberFormat("en-US").format(p.estimatedTotal)} VND`
+      : null,
     `• 인원: ${p.guestCount}명`,
     `• 차량: ${
       p.needsVehicle
-        ? `필요 (${p.vehicleType ?? "-"} / 픽업: ${p.pickupLocation ?? "-"})`
+        ? `필요 (${p.vehicleType ?? "-"} / 픽업: ${p.pickupDate ?? "-"} ${p.pickupTime ?? "-"} · ${p.pickupLocation ?? "-"})`
         : "불필요"
     }`,
     `• 연락처: ${p.contactName} / ${p.contactPhone}`,

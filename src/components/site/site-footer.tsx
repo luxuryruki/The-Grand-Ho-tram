@@ -18,6 +18,9 @@ export function SiteFooter() {
         </div>
 
         <div className="flex flex-col gap-3 text-sm text-fg-muted">
+          <Link href="/hotels" className="hover:text-fg">
+            {t("linkHotels")}
+          </Link>
           <Link href="/events" className="hover:text-fg">
             {t("linkEvents")}
           </Link>

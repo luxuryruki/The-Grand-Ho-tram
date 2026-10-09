@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { CONSULT_ENABLED } from "@/lib/features";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "대시보드" };
@@ -11,13 +12,15 @@ export default async function AdminDashboardPage() {
       prisma.event.count({ where: { isPublished: true } }),
       prisma.reservationRequest.count({ where: { status: "NEW" } }),
       prisma.reservationRequest.count(),
-      prisma.consultationSession.count(),
+      CONSULT_ENABLED ? prisma.consultationSession.count() : Promise.resolve(0),
     ]);
 
   const cards = [
     { label: "공개 이벤트", value: publishedEvents, sub: `전체 ${totalEvents}개`, href: "/admin/events" },
     { label: "신규 예약 요청", value: newReservations, sub: `전체 ${totalReservations}건`, href: "/admin/reservations" },
-    { label: "AI 상담 세션", value: consultSessions, sub: "누적", href: "/admin/consultations" },
+    ...(CONSULT_ENABLED
+      ? [{ label: "AI 상담 세션", value: consultSessions, sub: "누적", href: "/admin/consultations" }]
+      : []),
   ];
 
   return (
@@ -25,7 +28,7 @@ export default async function AdminDashboardPage() {
       <h1 className="text-2xl font-semibold text-fg">대시보드</h1>
       <p className="mt-1 text-sm text-fg-muted">THE GRAND 운영 현황을 한눈에 확인하세요.</p>
 
-      <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
+      <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {cards.map((c) => (
           <Link
             key={c.label}

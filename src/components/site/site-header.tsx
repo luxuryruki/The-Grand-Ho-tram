@@ -7,11 +7,13 @@ import { Menu, X } from "lucide-react";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
 import { useConsult } from "@/components/consult/consult-provider";
+import { CONSULT_ENABLED } from "@/lib/features";
 import { Container } from "./container";
 import { cn } from "@/lib/utils";
 
 const NAV_LINKS = [
   { href: "/", key: "home" },
+  { href: "/hotels", key: "hotels" },
   { href: "/events", key: "events" },
   { href: "/reserve", key: "reserve" },
 ] as const;
@@ -50,13 +52,15 @@ export function SiteHeader() {
               {t(item.key)}
             </Link>
           ))}
-          <button
-            type="button"
-            onClick={consult.open}
-            className="text-sm text-fg-muted transition-colors duration-200 hover:text-fg"
-          >
-            {t("consult")}
-          </button>
+          {CONSULT_ENABLED && (
+            <button
+              type="button"
+              onClick={consult.open}
+              className="text-sm text-fg-muted transition-colors duration-200 hover:text-fg"
+            >
+              {t("consult")}
+            </button>
+          )}
         </nav>
 
         <div className="hidden items-center gap-4 md:flex">
@@ -93,16 +97,18 @@ export function SiteHeader() {
                   {t(item.key)}
                 </Link>
               ))}
-              <button
-                type="button"
-                onClick={() => {
-                  setOpen(false);
-                  consult.open();
-                }}
-                className="rounded-lg px-3 py-3 text-left text-sm text-fg-muted transition-colors hover:bg-bg-elevated hover:text-fg"
-              >
-                {t("consult")}
-              </button>
+              {CONSULT_ENABLED && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setOpen(false);
+                    consult.open();
+                  }}
+                  className="rounded-lg px-3 py-3 text-left text-sm text-fg-muted transition-colors hover:bg-bg-elevated hover:text-fg"
+                >
+                  {t("consult")}
+                </button>
+              )}
               <div className="mt-2 px-3">
                 <LocaleSwitch locale={locale} onSwitch={switchLocale} />
               </div>

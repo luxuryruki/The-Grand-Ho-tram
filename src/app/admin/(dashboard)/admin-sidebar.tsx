@@ -12,6 +12,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { CONSULT_ENABLED } from "@/lib/features";
 
 type NavItem = {
   href: string;
@@ -25,7 +26,9 @@ const NAV: NavItem[] = [
   { href: "/admin/events", label: "이벤트 관리", icon: CalendarRange },
   { href: "/admin/hotel-types", label: "호텔 타입", icon: BedDouble },
   { href: "/admin/reservations", label: "예약 요청", icon: Users },
-  { href: "/admin/consultations", label: "AI 상담 로그", icon: MessageSquare },
+  ...(CONSULT_ENABLED
+    ? [{ href: "/admin/consultations", label: "AI 상담 로그", icon: MessageSquare }]
+    : []),
 ];
 
 export function AdminSidebar({ adminId }: { adminId: string }) {

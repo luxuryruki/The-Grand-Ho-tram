@@ -80,7 +80,20 @@ model HotelType {
 model ReservationRequest {
   id String @id @default(cuid())
 
-  hotelType  String
+  /// 예약 요청 호텔의 표시 이름 (예: "InterContinental Grand Ho Tram")
+  hotelName      String
+  /// src/data/hotels 의 호텔 id / 객실 slug. 객실을 정하지 않았다면 roomSlug는 null.
+  hotelId        String?
+  roomSlug       String?
+  roomName       String?
+  /// 요청 시점에 선택한 객실이 프로모션 적용 가능 객실이었는지 (안내는 상담으로 진행)
+  promoEligible  Boolean @default(false)
+  /// 선택한 요금 구성(RoomRate.rateKey)과, 요청 시점에 서버가 계산한 대략적인 견적(VND).
+  /// 참고용 금액이며 실제 요금은 상담 후 확정됩니다.
+  rateKey        String?
+  nights         Int?
+  estimatedTotal Int?
+
   checkIn    DateTime
   checkOut   DateTime
   guestCount Int
@@ -88,10 +101,13 @@ model ReservationRequest {
   needsVehicle   Boolean @default(false)
   vehicleType    String?
   pickupLocation String?
+  /// 픽업 날짜(YYYY-MM-DD)와 시간(HH:mm). 베트남 현지 시각 기준 문자열로 저장합니다.
+  pickupDate     String?
+  pickupTime     String?
 
   contactName      String
   contactPhone     String
-  preferredChannel PreferredChannel  @default(TELEGRAM)
+  preferredChannel PreferredChannel @default(TELEGRAM)
 
   status ReservationStatus @default(NEW)
 
@@ -137,7 +153,7 @@ model ConsultationMessage {
 
 /// 범용 사용자 행동 로그 (추후 세일즈포스 등 외부 플랫폼 연동용)
 model AnalyticsEvent {
-  id        String   @id @default(cuid())
+  id        String  @id @default(cuid())
   sessionId String?
   /// 예: page_view, reservation_submit, consult_start, consult_message
   eventType String
@@ -148,4 +164,67 @@ model AnalyticsEvent {
 
   @@index([eventType, createdAt])
   @@index([sessionId])
+}
+
+/// 객실 요금표 (VND, 서비스 요금·세금 포함 Nett). 엑셀 요금표를 `npm run db:import-rates`로 올립니다.
+/// 하나의 요금 행이 여러 사이트 객실에 적용될 수 있고(roomSlugs), 반대로 하나의 사이트 객실에
+/// 여러 요금 행(예: 침실 1개/2개 구성)이 연결될 수도 있습니다.
+model RoomRate {
+  id        String   @id @default(cuid())
+  hotelId   String
+  /// 요금 행의 고정 키 (영문 객실명 slug). 같은 호텔 안에서 유일합니다.
+  rateKey   String
+  nameEn    String
+  nameKo    String
+  roomCodes String[]
+  /// 이 요금이 적용되는 사이트 객실 slug (src/data/hotels). 사이트에 없는 객실이면 빈 배열
+  roomSlugs String[]
+
+  weekday       Int
+  /// 금요일 요금 컬럼이 없는 호텔은 null → 평일 요금을 적용
+  friday        Int?
+  saturday      Int
+  publicHoliday Int
+
+  /// 카지노 프로모션 적용 가능 객실 여부 (프로모션 내용은 상담으로 안내)
+  promoEligible Boolean  @default(false)
+  sortOrder     Int      @default(0)
+  /// 이 날짜 이후 숙박분부터 적용되는 요금
+  validFrom     DateTime @db.Date
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([hotelId, rateKey])
+  @@index([hotelId, sortOrder])
+}
+
+/// 호텔별 추가 인원 요금, 세금/서비스 요금 안내값
+model HotelRateInfo {
+  hotelId String @id
+
+  /// 3번째 인원부터의 추가 요금 (VND, Nett)
+  extraBed             Int?
+  bedAndBreakfastAdult Int?
+  breakfastChild       Int?
+
+  serviceChargePercent Int @default(5)
+  taxPercent           Int @default(8)
+
+  validFrom  DateTime @db.Date
+  sourceFile String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+/// 베트남 공휴일. 이 날짜의 숙박은 요금표의 "Public Holiday" 요금이 적용됩니다.
+model PublicHoliday {
+  id     String   @id @default(cuid())
+  date   DateTime @unique @db.Date
+  nameKo String
+  nameEn String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

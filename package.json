@@ -12,7 +12,9 @@
     "db:push": "prisma db push",
     "db:migrate": "prisma migrate dev",
     "db:studio": "prisma studio",
-    "db:seed": "tsx prisma/seed.ts"
+    "db:seed": "tsx prisma/seed.ts",
+    "db:import-rates": "tsx prisma/import-rates.ts",
+    "db:seed-holidays": "tsx prisma/seed-holidays.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.124.0",
@@ -42,6 +44,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.3.4",
     "prisma": "^7.10.0",
+    "read-excel-file": "^9.3.12",
     "tailwindcss": "^4",
     "tsx": "^4.23.13",
     "typescript": "^5"

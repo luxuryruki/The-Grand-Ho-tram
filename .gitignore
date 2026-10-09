@@ -43,3 +43,6 @@ next-env.d.ts
 
 # prisma generated client (regenerated via `npm install` / `prisma generate`)
 /src/generated/
+
+# internal rate sheets (confidential nett rates) - never commit
+/hotel data/

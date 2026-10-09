@@ -8,6 +8,7 @@ import { SiteFooter } from "@/components/site/site-footer";
 import { HtmlLangSync } from "@/components/site/html-lang-sync";
 import { ConsultProvider } from "@/components/consult/consult-provider";
 import { ConsultWidget } from "@/components/consult/consult-widget";
+import { CONSULT_ENABLED } from "@/lib/features";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -62,7 +63,7 @@ export default async function LocaleLayout({
           <main className="flex-1">{children}</main>
           <SiteFooter />
         </div>
-        <ConsultWidget />
+        {CONSULT_ENABLED && <ConsultWidget />}
       </ConsultProvider>
     </NextIntlClientProvider>
   );

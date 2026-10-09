@@ -81,7 +81,7 @@ export default async function HomePage({
             </h2>
           </Reveal>
 
-          <RevealGroup className="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          <RevealGroup className="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {highlights.map((item, i) => (
               <RevealItem key={item.title}>
                 <div className="h-full rounded-2xl border border-border bg-bg-elevated p-6 transition-colors duration-300 hover:border-border-strong">

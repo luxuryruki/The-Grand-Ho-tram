@@ -2,6 +2,7 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { ANTHROPIC_MODEL, buildConsultSystemPrompt, getAnthropicClient } from "@/lib/anthropic";
 import { logAnalyticsEvent } from "@/lib/analytics";
+import { CONSULT_ENABLED } from "@/lib/features";
 
 const schema = z.object({
   sessionId: z.string().min(1),
@@ -12,6 +13,10 @@ const schema = z.object({
 const MAX_HISTORY_MESSAGES = 20;
 
 export async function POST(request: Request) {
+  if (!CONSULT_ENABLED) {
+    return new Response("AI 상담은 현재 준비 중입니다.", { status: 503 });
+  }
+
   const json = await request.json().catch(() => null);
   const parsed = schema.safeParse(json);
   if (!parsed.success) {
