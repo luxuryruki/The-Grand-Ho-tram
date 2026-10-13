@@ -2,6 +2,7 @@
   "nav": {
     "home": "Home",
     "hotels": "Hotels",
+    "golf": "Golf",
     "events": "Events",
     "reserve": "Reserve",
     "consult": "AI Consult",
@@ -11,6 +12,7 @@
   "footer": {
     "description": "Curated hotels and private vehicles — plan your perfect journey with THE GRAND.",
     "linkHotels": "Hotels",
+    "linkGolf": "The Bluffs Golf",
     "linkEvents": "Events & Promotions",
     "linkReserve": "Hotel & Vehicle Reservation",
     "copyright": "© {year} THE GRAND. All rights reserved."

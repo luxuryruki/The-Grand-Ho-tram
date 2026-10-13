@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { Container } from "@/components/site/container";
@@ -34,6 +35,20 @@ export default async function HomePage({
     <div>
       {/* Hero */}
       <section className="relative overflow-hidden">
+        {/* 우측에 사진, 좌측으로 갈수록 배경색으로 흐려져서 텍스트가 읽히도록 합니다. 모바일은 사진 전체에 어두운 막을 덮습니다. */}
+        <div className="pointer-events-none absolute inset-y-0 right-0 w-full lg:w-[68%]">
+          <Image
+            src="/hero/the-grand-ho-tram.webp"
+            alt=""
+            fill
+            priority
+            sizes="(min-width: 1024px) 68vw, 100vw"
+            className="object-cover object-center"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-bg/85 via-bg/80 to-bg lg:hidden" />
+          <div className="absolute inset-y-0 -left-0.5 right-0 hidden bg-gradient-to-r from-bg via-bg/55 to-transparent lg:block" />
+          <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-bg to-transparent" />
+        </div>
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_-10%,rgba(205,160,94,0.14),transparent_55%)]" />
         <Container className="relative flex flex-col items-start gap-6 py-24 sm:py-32 lg:py-40">
           <Reveal>

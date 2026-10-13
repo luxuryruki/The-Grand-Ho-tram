@@ -1,4 +1,5 @@
 import { defineRouting } from "next-intl/routing";
+import { ENGLISH_ENABLED } from "@/lib/features";
 
 /**
  * Central i18n configuration.
@@ -15,6 +16,8 @@ export const routing = defineRouting({
   defaultLocale: "ko",
   // 기본 로케일(ko)은 prefix 없이 "/", 그 외 로케일은 "/en"처럼 prefix가 붙습니다.
   localePrefix: "as-needed",
+  // 한국어 전용 운영 중에는 브라우저 언어/쿠키로 /en 으로 보내지 않습니다.
+  localeDetection: ENGLISH_ENABLED,
   localeCookie: {
     name: "NEXT_LOCALE",
   },

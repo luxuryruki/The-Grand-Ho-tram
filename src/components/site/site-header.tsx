@@ -1,19 +1,21 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
 import { useConsult } from "@/components/consult/consult-provider";
-import { CONSULT_ENABLED } from "@/lib/features";
+import { CONSULT_ENABLED, ENGLISH_ENABLED } from "@/lib/features";
 import { Container } from "./container";
 import { cn } from "@/lib/utils";
 
 const NAV_LINKS = [
   { href: "/", key: "home" },
   { href: "/hotels", key: "hotels" },
+  { href: "/golf", key: "golf" },
   { href: "/events", key: "events" },
   { href: "/reserve", key: "reserve" },
 ] as const;
@@ -36,10 +38,18 @@ export function SiteHeader() {
       <Container className="flex h-16 items-center justify-between sm:h-20">
         <Link
           href="/"
-          className="text-lg font-semibold tracking-[0.18em] text-fg sm:text-xl"
+          aria-label="The Grand Ho Tram"
+          className="flex shrink-0 items-center"
           onClick={() => setOpen(false)}
         >
-          THE GRAND
+          <Image
+            src="/logo/the-grand-ho-tram-light.webp"
+            alt="The Grand Ho Tram"
+            width={560}
+            height={355}
+            priority
+            className="h-11 w-auto sm:h-14"
+          />
         </Link>
 
         <nav className="hidden items-center gap-8 md:flex">
@@ -63,9 +73,11 @@ export function SiteHeader() {
           )}
         </nav>
 
-        <div className="hidden items-center gap-4 md:flex">
-          <LocaleSwitch locale={locale} onSwitch={switchLocale} />
-        </div>
+        {ENGLISH_ENABLED && (
+          <div className="hidden items-center gap-4 md:flex">
+            <LocaleSwitch locale={locale} onSwitch={switchLocale} />
+          </div>
+        )}
 
         <button
           type="button"
@@ -109,9 +121,11 @@ export function SiteHeader() {
                   {t("consult")}
                 </button>
               )}
-              <div className="mt-2 px-3">
-                <LocaleSwitch locale={locale} onSwitch={switchLocale} />
-              </div>
+              {ENGLISH_ENABLED && (
+                <div className="mt-2 px-3">
+                  <LocaleSwitch locale={locale} onSwitch={switchLocale} />
+                </div>
+              )}
             </Container>
           </motion.div>
         )}

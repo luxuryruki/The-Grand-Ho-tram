@@ -21,6 +21,9 @@ export function SiteFooter() {
           <Link href="/hotels" className="hover:text-fg">
             {t("linkHotels")}
           </Link>
+          <Link href="/golf" className="hover:text-fg">
+            {t("linkGolf")}
+          </Link>
           <Link href="/events" className="hover:text-fg">
             {t("linkEvents")}
           </Link>

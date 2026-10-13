@@ -2,6 +2,7 @@
   "nav": {
     "home": "홈",
     "hotels": "호텔 소개",
+    "golf": "골프",
     "events": "이벤트",
     "reserve": "예약",
     "consult": "AI 상담",
@@ -11,6 +12,7 @@
   "footer": {
     "description": "엄선된 호텔과 프라이빗 차량까지 — THE GRAND와 함께 완벽한 여정을 계획하세요.",
     "linkHotels": "호텔 소개",
+    "linkGolf": "더 블러프스 골프",
     "linkEvents": "이벤트 · 프로모션",
     "linkReserve": "호텔 · 차량 예약",
     "copyright": "© {year} THE GRAND. All rights reserved."
