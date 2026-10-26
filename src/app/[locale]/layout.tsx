@@ -20,7 +20,23 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
+  const isEn = locale === "en";
+  const brand = isEn ? "The Concierge Ho Tram" : "더 컨시어지 호짬";
+  const description = isEn
+    ? "The Concierge Ho Tram — hotel, golf and travel inquiries for The Grand Ho Tram resort complex."
+    : "더 컨시어지 호짬 — 더 그랜드 호짬 복합 리조트의 호텔·골프 안내와 문의.";
+  const ogImage = { url: "/og/main.jpg", width: 1200, height: 630, alt: brand };
   return {
+    // 카카오톡·SNS로 링크를 공유할 때 보이는 미리보기(제목, 설명, 대표 이미지)
+    openGraph: {
+      type: "website",
+      siteName: brand,
+      title: brand,
+      description,
+      locale: isEn ? "en_US" : "ko_KR",
+      images: [ogImage],
+    },
+    twitter: { card: "summary_large_image", title: brand, description, images: [ogImage.url] },
     alternates: {
       languages: Object.fromEntries(
         routing.locales
