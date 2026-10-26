@@ -21,7 +21,9 @@ function timingSafeEqualStr(a: string, b: string) {
 
 /** 운영에서는 짧거나 샘플인 관리자 비밀번호로는 로그인할 수 없게 합니다. */
 function isWeakAdminPassword(password: string) {
-  return password.length < 12 || /change-me|password|1234/i.test(password);
+  const hasLetter = /[A-Za-z]/.test(password);
+  const hasDigit = /[0-9]/.test(password);
+  return password.length < 10 || !hasLetter || !hasDigit || /change-me|password|1234/i.test(password);
 }
 
 // 같은 IP에서 연달아 틀리면 잠시 막습니다. (서버 인스턴스별 메모리 기준의 간단한 제한입니다.)
@@ -63,7 +65,7 @@ export async function POST(request: Request) {
 
   if (process.env.NODE_ENV === "production" && isWeakAdminPassword(adminPassword)) {
     return NextResponse.json(
-      { error: "관리자 비밀번호가 너무 약합니다. 서버 환경변수 ADMIN_PASSWORD를 12자 이상의 강한 비밀번호로 바꿔 주세요." },
+      { error: "관리자 비밀번호가 너무 약합니다. 서버 환경변수 ADMIN_PASSWORD를 영문과 숫자를 섞은 10자 이상 비밀번호로 바꿔 주세요." },
       { status: 500 }
     );
   }
