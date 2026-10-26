@@ -4,6 +4,7 @@ import { useRef, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, ImagePlus, Trash2, UploadCloud } from "lucide-react";
+import { shrinkImage } from "@/lib/shrink-image";
 import { EventFields, toEventPayload, type EventFormValues } from "../event-fields";
 
 type EventImage = { id: string; url: string };
@@ -67,7 +68,7 @@ export function EventEditForm({ event }: { event: EventData }) {
     setError(null);
     try {
       const formData = new FormData();
-      formData.append("file", file);
+      formData.append("file", await shrinkImage(file));
       const res = await fetch(`/api/admin/events/${event.id}/images`, {
         method: "POST",
         body: formData,
