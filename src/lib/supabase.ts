@@ -9,6 +9,11 @@ function requireEnv(name: string): string {
   return value;
 }
 
+/** 대시보드에서 REST 주소(…/rest/v1/)를 복사해 넣어도 프로젝트 주소(https://<id>.supabase.co)로 맞춰 줍니다. */
+function normalizeProjectUrl(url: string): string {
+  return url.trim().replace(/\/(rest|storage|auth)\/v1\/?$/, "").replace(/\/+$/, "");
+}
+
 /**
  * service_role 키를 사용하는 서버 전용 Supabase 클라이언트.
  * 관리자 이미지 업로드처럼 서버(Route Handler)에서만 사용해야 하며,
@@ -16,7 +21,7 @@ function requireEnv(name: string): string {
  */
 export function getSupabaseAdminClient() {
   return createClient(
-    requireEnv("NEXT_PUBLIC_SUPABASE_URL"),
+    normalizeProjectUrl(requireEnv("NEXT_PUBLIC_SUPABASE_URL")),
     requireEnv("SUPABASE_SERVICE_ROLE_KEY"),
     { auth: { persistSession: false } }
   );

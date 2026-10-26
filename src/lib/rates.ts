@@ -1,5 +1,6 @@
 import "server-only";
 import { prisma } from "./prisma";
+import { PRICES_VISIBLE } from "./features";
 import type { RateVariant } from "./pricing";
 
 export type HotelPriceInfo = {
@@ -66,4 +67,10 @@ export async function getRateBook(): Promise<RateBook> {
       ])
     ),
   };
+}
+
+/** 공개 페이지용 요금 데이터. 요금 표시를 끈 동안은 DB를 읽지 않고 빈 값을 돌려줘서, 페이지 데이터에도 요금이 실리지 않습니다. */
+export async function getPublicRateBook(): Promise<RateBook> {
+  if (!PRICES_VISIBLE) return { rates: [], holidays: [], info: {} };
+  return getRateBook();
 }

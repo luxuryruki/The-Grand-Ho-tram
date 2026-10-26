@@ -6,7 +6,8 @@ import { Container } from "@/components/site/container";
 import { Reveal } from "@/components/motion/reveal";
 import { LinkButton } from "@/components/ui/button";
 import { prisma } from "@/lib/prisma";
-import { formatDateRange } from "@/lib/utils";
+import { publicEventWhere } from "@/lib/events";
+import { formatEventDate } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
@@ -19,7 +20,7 @@ export default async function EventDetailPage({
   const t = await getTranslations("events");
 
   const event = await prisma.event.findFirst({
-    where: { id, isPublished: true },
+    where: { id, ...publicEventWhere() },
     include: { images: { orderBy: { order: "asc" } } },
   });
 
@@ -40,9 +41,6 @@ export default async function EventDetailPage({
     );
   }
 
-  const cover = event.images[0];
-  const rest = event.images.slice(1);
-
   return (
     <Container className="py-16 sm:py-24">
       <Reveal>
@@ -54,64 +52,53 @@ export default async function EventDetailPage({
         </Link>
       </Reveal>
 
-      <Reveal delay={0.05} className="mt-6">
-        <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl bg-bg-elevated-2">
-          {cover ? (
-            <Image
-              src={cover.url}
-              alt={event.title}
-              fill
-              sizes="100vw"
-              className="object-cover"
-              priority
-            />
-          ) : (
-            <div className="flex h-full w-full items-center justify-center text-fg-subtle">
+      {/* 왼쪽에 포스터(원본 비율 그대로, 잘림 없이), 오른쪽에 이벤트 설명. 좁은 화면에서는 위아래로 쌓입니다. */}
+      <div className="mt-8 grid gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,4fr)] lg:items-start lg:gap-14">
+        {event.images.length === 0 ? (
+          <Reveal delay={0.05}>
+            <div className="flex aspect-[3/4] w-full items-center justify-center rounded-2xl bg-bg-elevated-2 text-fg-subtle">
               <ImageOff size={36} />
             </div>
-          )}
-        </div>
-      </Reveal>
+          </Reveal>
+        ) : (
+          <Reveal delay={0.05} className="space-y-4">
+            {event.images.map((img: { id: string; url: string }, i: number) => (
+              <div key={img.id} className="overflow-hidden rounded-2xl bg-bg-elevated-2">
+                <Image
+                  src={img.url}
+                  alt={event.title}
+                  width={0}
+                  height={0}
+                  sizes="(min-width: 1024px) 50vw, 100vw"
+                  priority={i === 0}
+                  className="block h-auto w-full"
+                />
+              </div>
+            ))}
+          </Reveal>
+        )}
 
-      {rest.length > 0 && (
-        <div className="mt-3 grid grid-cols-3 gap-3 sm:grid-cols-4">
-          {rest.map((img: { id: string; url: string }) => (
-            <div
-              key={img.id}
-              className="relative aspect-square overflow-hidden rounded-xl bg-bg-elevated-2"
-            >
-              <Image
-                src={img.url}
-                alt={event.title}
-                fill
-                sizes="25vw"
-                className="object-cover"
-              />
-            </div>
-          ))}
-        </div>
-      )}
-
-      <div className="mt-10 flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
-        <div className="max-w-2xl">
-          <p className="text-xs uppercase tracking-wide text-accent">
-            {t("period")}: {formatDateRange(event.startDate, event.endDate, locale)}
+        <Reveal delay={0.1} className="lg:sticky lg:top-28">
+          <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs tracking-wide text-accent">
+            <span className="rounded-full bg-accent/15 px-2 py-0.5 font-medium">
+              {event.kind === "SINGLE_DAY" ? t("kindSingle") : t("kindPeriod")}
+            </span>
+            <span>{formatEventDate(event.kind, event.startDate, event.endDate, locale)}</span>
           </p>
-          <h1 className="mt-3 text-3xl font-semibold text-fg sm:text-4xl">
+          <h1 className="mt-4 break-keep text-3xl font-semibold leading-tight text-fg sm:text-4xl">
             {event.title}
           </h1>
-          <p className="mt-5 whitespace-pre-wrap text-sm leading-relaxed text-fg-muted sm:text-base">
+          <p className="mt-6 whitespace-pre-wrap break-keep text-sm leading-relaxed text-fg-muted sm:text-base">
             {event.description}
           </p>
-        </div>
-
-        <LinkButton
-          href={`/reserve?source=${encodeURIComponent(`event:${event.id}`)}`}
-          size="lg"
-          className="shrink-0"
-        >
-          {t("cta")}
-        </LinkButton>
+          <LinkButton
+            href={`/inquiry?source=${encodeURIComponent(`event:${event.id}`)}`}
+            size="lg"
+            className="mt-8 w-full sm:w-auto"
+          >
+            {t("cta")}
+          </LinkButton>
+        </Reveal>
       </div>
     </Container>
   );

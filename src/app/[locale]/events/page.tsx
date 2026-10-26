@@ -1,8 +1,10 @@
 import { getTranslations } from "next-intl/server";
 import { Container } from "@/components/site/container";
-import { Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal";
+import { Reveal } from "@/components/motion/reveal";
 import { EventCard } from "@/components/events/event-card";
+import { EventSlider } from "@/components/events/event-slider";
 import { prisma } from "@/lib/prisma";
+import { publicEventWhere, sortEventsByProximity } from "@/lib/events";
 
 export const dynamic = "force-dynamic";
 
@@ -19,11 +21,12 @@ export default async function EventsPage({
   const { locale } = await params;
   const t = await getTranslations("events");
 
-  const events = await prisma.event.findMany({
-    where: { isPublished: true },
-    orderBy: [{ startDate: "desc" }],
-    include: { images: { orderBy: { order: "asc" }, take: 1 } },
-  });
+  const events = sortEventsByProximity(
+    await prisma.event.findMany({
+      where: publicEventWhere(),
+      include: { images: { orderBy: { order: "asc" }, take: 1 } },
+    })
+  );
 
   return (
     <Container className="py-16 sm:py-24">
@@ -41,23 +44,25 @@ export default async function EventsPage({
           {t("empty")}
         </p>
       ) : (
-        <RevealGroup className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {events.map((event) => (
-            <RevealItem key={event.id}>
+        <Reveal delay={0.05} className="mt-12">
+          <EventSlider>
+            {events.map((event) => (
               <EventCard
+                key={event.id}
                 event={{
                   id: event.id,
                   title: event.title,
                   description: event.description,
+                  kind: event.kind,
                   startDate: event.startDate,
                   endDate: event.endDate,
                   images: event.images,
                 }}
                 locale={locale}
               />
-            </RevealItem>
-          ))}
-        </RevealGroup>
+            ))}
+          </EventSlider>
+        </Reveal>
       )}
     </Container>
   );

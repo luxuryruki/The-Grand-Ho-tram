@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Eye, EyeOff, Trash2 } from "lucide-react";
+import Link from "next/link";
+import { Eye, EyeOff, Pencil, Trash2 } from "lucide-react";
 
 export function EventRowActions({
   eventId,
@@ -41,6 +42,13 @@ export function EventRowActions({
 
   return (
     <div className="flex items-center justify-end gap-1.5">
+      <Link
+        href={`/admin/events/${eventId}`}
+        className="flex h-8 items-center gap-1.5 rounded-lg px-2.5 text-xs font-medium text-fg-muted transition-colors hover:bg-bg-elevated-2 hover:text-fg"
+      >
+        <Pencil size={13} />
+        수정
+      </Link>
       <button
         type="button"
         disabled={loading}

@@ -9,9 +9,12 @@ import { Link } from "@/i18n/navigation";
 import { Button, LinkButton } from "@/components/ui/button";
 import { PriceDisclaimer } from "@/components/pricing/price-disclaimer";
 import { StayQuote } from "@/components/pricing/stay-quote";
+import { DatePicker } from "@/components/ui/date-picker";
+import { DateRangePicker } from "@/components/ui/date-range-picker";
+import { TimePicker } from "@/components/ui/time-picker";
 import type { HotelOption } from "@/data/hotels/hotel-options";
 import { VEHICLES, getVehicle, vehicleText } from "@/data/vehicles";
-import { addDays, formatVnd, parseIsoDate, quoteStay } from "@/lib/pricing";
+import { formatVnd, parseIsoDate, quoteStay } from "@/lib/pricing";
 import { cn } from "@/lib/utils";
 import { getOrCreateSessionId } from "@/lib/client-session";
 import {
@@ -115,8 +118,16 @@ export function ReserveForm({
     e.preventDefault();
     setError(null);
 
-    if (new Date(form.checkOut).getTime() <= new Date(form.checkIn).getTime()) {
+    if (
+      !form.checkIn ||
+      !form.checkOut ||
+      new Date(form.checkOut).getTime() <= new Date(form.checkIn).getTime()
+    ) {
       setError(t("validation.dates"));
+      return;
+    }
+    if (form.needsVehicle && !form.pickupTime) {
+      setError(t("validation.pickupTime"));
       return;
     }
 
@@ -185,37 +196,13 @@ export function ReserveForm({
           onRateChange={(rateKey) => update("rateKey", rateKey)}
         />
 
-        <div className="grid grid-cols-2 gap-4">
-          <Field label={t("checkIn")} htmlFor="checkIn">
-            <input
-              id="checkIn"
-              type="date"
-              required
-              min={selectedHotel?.info?.validFrom}
-              value={form.checkIn}
-              onChange={(e) => {
-                const checkIn = e.target.value;
-                setForm((f) => ({
-                  ...f,
-                  checkIn,
-                  checkOut: checkIn && (!f.checkOut || f.checkOut <= checkIn) ? (addDays(checkIn, 1) ?? "") : f.checkOut,
-                }));
-              }}
-              className={inputClass}
-            />
-          </Field>
-          <Field label={t("checkOut")} htmlFor="checkOut">
-            <input
-              id="checkOut"
-              type="date"
-              required
-              min={form.checkIn ? (addDays(form.checkIn, 1) ?? undefined) : selectedHotel?.info?.validFrom}
-              value={form.checkOut}
-              onChange={(e) => update("checkOut", e.target.value)}
-              className={inputClass}
-            />
-          </Field>
-        </div>
+        <DateRangePicker
+          checkIn={form.checkIn}
+          checkOut={form.checkOut}
+          min={selectedHotel?.info?.validFrom}
+          holidays={holidays}
+          onChange={({ checkIn, checkOut }) => setForm((f) => ({ ...f, checkIn, checkOut }))}
+        />
 
         <StayQuote
           variant={selectedVariant}
@@ -291,23 +278,19 @@ export function ReserveForm({
 
             <div className="grid grid-cols-2 gap-4">
               <Field label={t("pickupDate")} htmlFor="pickupDate">
-                <input
+                <DatePicker
                   id="pickupDate"
-                  type="date"
-                  required
                   value={form.pickupDate || form.checkIn}
-                  onChange={(e) => update("pickupDate", e.target.value)}
-                  className={inputClass}
+                  min={selectedHotel?.info?.validFrom}
+                  holidays={holidays}
+                  onChange={(iso) => update("pickupDate", iso)}
                 />
               </Field>
               <Field label={t("pickupTime")} htmlFor="pickupTime">
-                <input
+                <TimePicker
                   id="pickupTime"
-                  type="time"
-                  required
                   value={form.pickupTime}
-                  onChange={(e) => update("pickupTime", e.target.value)}
-                  className={inputClass}
+                  onChange={(time) => update("pickupTime", time)}
                 />
               </Field>
             </div>

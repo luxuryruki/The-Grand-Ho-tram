@@ -664,7 +664,7 @@ export const holidayinn: Hotel = {
       category: "suite",
       name: "1 King Bed Suite",
       description: {
-        ko: "48㎡ 스위트의 밝고 아늑한 거실을 즐겨 보세요. 온수 욕조와 레인 샤워기를 갖춘 넓은 욕실이 있으며, 완벽한 휴가를 위한 세심한 가구가 마련되어 있습니다. 모든 스위트에는 50인치 TV, 금고, 무료 차·커피 시설이 갖춰져 있습니다.",
+        ko: "48㎡ 스위트의 밝고 아늑한 거실을 즐겨 보세요. 온수 욕조와 레인 샤워기를 갖춘 넓은 욕실이 있으며, 편안한 휴가를 위해 세심하게 고른 가구가 마련되어 있습니다. 모든 스위트에는 50인치 TV, 금고, 무료 차·커피 시설이 갖춰져 있습니다.",
         en: "Enjoy our bright and welcoming living room of this 48 sqm suite. Includes a spacious bathroom with hot tub and rain shower, our Suite offers thoughtful furniture for your perfect getaway. All suites include a 50″ TV, safe and complimentary tea and coffee facilities."
       },
       size: "48 m²",

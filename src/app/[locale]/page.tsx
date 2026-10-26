@@ -2,10 +2,15 @@ import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { Container } from "@/components/site/container";
-import { LinkButton, buttonClassName } from "@/components/ui/button";
+import { MessageCircle } from "lucide-react";
+import { buttonClassName } from "@/components/ui/button";
+import { KAKAO_CHAT_URL } from "@/lib/contact";
 import { Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal";
 import { EventCard } from "@/components/events/event-card";
+import { ResortGuide } from "@/components/home/resort-guide";
+import { MemberBanner } from "@/components/membership/member-banner";
 import { prisma } from "@/lib/prisma";
+import { publicEventWhere, sortEventsByProximity } from "@/lib/events";
 import { HighlightIcon } from "@/components/home/highlight-icon";
 
 // 이벤트 목록이 관리자 대시보드에서 실시간으로 바뀌므로 매 요청마다 새로 렌더링합니다.
@@ -19,12 +24,16 @@ export default async function HomePage({
   const { locale } = await params;
   const t = await getTranslations("home");
 
-  const events = await prisma.event.findMany({
-    where: { isPublished: true },
-    orderBy: [{ startDate: "desc" }],
-    include: { images: { orderBy: { order: "asc" }, take: 1 } },
-    take: 3,
-  });
+  // 오늘과 가까운 날짜의 이벤트가 먼저 오도록 정렬한 뒤 앞의 3개만 보여 줍니다.
+  const events = sortEventsByProximity(
+    await prisma.event.findMany({
+      where: publicEventWhere(),
+      include: { images: { orderBy: { order: "asc" }, take: 1 } },
+    })
+  ).slice(0, 3);
+
+  // 둘째 줄은 쉼표 뒤 부분만 포인트 색으로 강조합니다. 쉼표가 없으면 그대로 표시합니다.
+  const [line2Lead, line2Accent] = t("hero.titleLine2").split(", ");
 
   const highlights = t.raw("highlights.items") as {
     title: string;
@@ -57,10 +66,16 @@ export default async function HomePage({
             </p>
           </Reveal>
           <Reveal delay={0.05}>
-            <h1 className="max-w-2xl text-4xl font-semibold leading-[1.15] text-fg sm:text-5xl lg:text-6xl">
+            <h1 className="max-w-2xl break-keep text-[2rem] font-semibold leading-[1.2] text-fg sm:text-5xl lg:text-6xl">
               {t("hero.titleLine1")}
               <br />
-              {t("hero.titleLine2")}
+              {line2Lead}
+              {line2Accent && (
+                <>
+                  {", "}
+                  <span className="text-accent">{line2Accent}</span>
+                </>
+              )}
             </h1>
           </Reveal>
           <Reveal delay={0.1}>
@@ -70,9 +85,9 @@ export default async function HomePage({
           </Reveal>
           <Reveal delay={0.15}>
             <div className="flex flex-col gap-3 pt-2 sm:flex-row">
-              <LinkButton href="/reserve" size="lg">
+              <a href="#kakao-contact" className={buttonClassName("primary", "lg")}>
                 {t("hero.ctaPrimary")}
-              </LinkButton>
+              </a>
               <Link
                 href="/events"
                 className={buttonClassName("secondary", "lg")}
@@ -83,6 +98,10 @@ export default async function HomePage({
           </Reveal>
         </Container>
       </section>
+
+      <ResortGuide />
+
+      <MemberBanner />
 
       {/* Highlights */}
       <section className="border-t border-border py-20 sm:py-28">
@@ -147,6 +166,7 @@ export default async function HomePage({
                       id: event.id,
                       title: event.title,
                       description: event.description,
+                      kind: event.kind,
                       startDate: event.startDate,
                       endDate: event.endDate,
                       images: event.images,
@@ -160,19 +180,38 @@ export default async function HomePage({
         </Container>
       </section>
 
-      {/* CTA */}
-      <section className="border-t border-border py-20 sm:py-28">
+      {/* 카카오톡 문의: QR을 바로 보여 줍니다 */}
+      <section id="kakao-contact" className="scroll-mt-20 border-t border-border py-20 sm:py-28">
         <Container>
-          <Reveal className="flex flex-col items-center gap-5 rounded-3xl border border-border bg-bg-elevated px-6 py-16 text-center sm:px-16">
-            <h2 className="max-w-xl text-2xl font-semibold text-fg sm:text-3xl">
-              {t("cta.title")}
-            </h2>
-            <p className="max-w-md text-sm text-fg-muted sm:text-base">
-              {t("cta.subtitle")}
-            </p>
-            <LinkButton href="/reserve" size="lg" className="mt-2">
-              {t("cta.button")}
-            </LinkButton>
+          <Reveal className="grid items-center gap-10 rounded-3xl border border-border bg-bg-elevated px-6 py-12 sm:px-12 sm:py-14 md:grid-cols-[minmax(0,1fr)_auto] md:gap-16">
+            <div className="text-center md:text-left">
+              <h2 className="break-keep text-2xl font-semibold text-fg sm:text-3xl">{t("cta.title")}</h2>
+              <p className="mt-4 max-w-md break-keep text-sm leading-relaxed text-fg-muted sm:text-base md:mx-0 mx-auto">
+                {t("cta.subtitle")}
+              </p>
+              <a
+                href={KAKAO_CHAT_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={buttonClassName("primary", "lg", "mt-7 w-full sm:w-auto md:hidden")}
+              >
+                <MessageCircle size={18} />
+                {t("cta.button")}
+              </a>
+            </div>
+            <div className="mx-auto text-center">
+              <div className="w-56 overflow-hidden rounded-2xl bg-white p-2 sm:w-64">
+                <Image
+                  src="/kakao/chat-qr.png"
+                  alt={t("cta.qrAlt")}
+                  width={800}
+                  height={800}
+                  sizes="256px"
+                  className="h-auto w-full"
+                />
+              </div>
+              <p className="mt-4 text-sm font-medium text-fg">{t("cta.qrCaption")}</p>
+            </div>
           </Reveal>
         </Container>
       </section>

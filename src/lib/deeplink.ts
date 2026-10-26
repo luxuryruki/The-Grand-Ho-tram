@@ -36,7 +36,7 @@ export function buildReservationSummaryText(
   const isKo = locale === "ko";
   const lines = isKo
     ? [
-        "[THE GRAND 예약 문의]",
+        "[The Concierge Ho Tram 문의]",
         `- 호텔: ${r.hotelName}`,
         `- 객실: ${r.roomName || "미정 (상담 후 결정)"}${r.promoEligible ? " (프로모션 적용 가능 객실)" : ""}`,
         `- 체크인~체크아웃: ${r.checkIn} ~ ${r.checkOut}`,
@@ -51,7 +51,7 @@ export function buildReservationSummaryText(
         `- 연락처: ${r.contactPhone}`,
       ]
     : [
-        "[THE GRAND Reservation Inquiry]",
+        "[The Concierge Ho Tram Inquiry]",
         `- Hotel: ${r.hotelName}`,
         `- Room: ${r.roomName || "To be decided (via consultation)"}${r.promoEligible ? " (promotion-eligible room)" : ""}`,
         `- Check-in ~ Check-out: ${r.checkIn} ~ ${r.checkOut}`,

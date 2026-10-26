@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
+import { MemberNotice } from "@/components/membership/member-notice";
 import { LinkButton } from "@/components/ui/button";
 import { StayDates } from "@/components/pricing/stay-dates";
 import { StayQuote } from "@/components/pricing/stay-quote";
@@ -53,6 +54,8 @@ export function RoomRateCalculator({
           checkIn={dates.checkIn}
           checkOut={dates.checkOut}
           min={info?.validFrom}
+          holidays={holidays}
+          months={1}
           onChange={setDates}
         />
       </div>
@@ -98,13 +101,15 @@ export function RoomRateCalculator({
         info={info}
       />
 
+      <MemberNotice />
+
       {variant?.promo && (
         <p className="break-keep rounded-lg bg-accent/10 px-4 py-3 text-sm leading-relaxed text-accent">
           {t("promoNotice")}
         </p>
       )}
 
-      <LinkButton href={`/reserve?${params.toString()}`} size="lg" className="w-full sm:w-auto">
+      <LinkButton href={`/inquiry?${params.toString()}`} size="lg" className="w-full sm:w-auto">
         {t("roomReserveCta")}
       </LinkButton>
     </div>

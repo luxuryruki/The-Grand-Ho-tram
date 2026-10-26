@@ -1,16 +1,11 @@
 import { NextResponse } from "next/server";
-import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireAdminSession } from "@/lib/session";
 import { deleteEventImageFile } from "@/lib/supabase";
+import { eventPatchSchema, resolveEventDates, toKstDateInput } from "@/lib/events";
 
-const updateEventSchema = z.object({
-  title: z.string().min(1).optional(),
-  description: z.string().min(1).optional(),
-  startDate: z.string().min(1).optional(),
-  endDate: z.string().min(1).optional(),
-  isPublished: z.boolean().optional(),
-});
+// 일부 필드만 보낼 수 있습니다(예: 목록의 공개/비공개 전환은 isPublished만). 날짜 관련 필드는 기존 값과 합쳐 다시 검증합니다.
+const updateEventSchema = eventPatchSchema;
 
 export async function GET(
   _request: Request,
@@ -55,19 +50,30 @@ export async function PATCH(
     );
   }
 
-  const { startDate, endDate, ...rest } = parsed.data;
-
   const existing = await prisma.event.findUnique({ where: { id } });
   if (!existing) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
 
+  const input = parsed.data;
+  const resolved = resolveEventDates({
+    kind: input.kind ?? existing.kind,
+    startDate: input.startDate ?? existing.startDate.toISOString().slice(0, 10),
+    endDate: input.endDate !== undefined ? input.endDate : existing.endDate.toISOString().slice(0, 10),
+    isPublished: input.isPublished ?? existing.isPublished,
+    publishFrom: input.publishFrom !== undefined ? input.publishFrom : toKstDateInput(existing.publishFrom) || null,
+    publishUntil: input.publishUntil !== undefined ? input.publishUntil : toKstDateInput(existing.publishUntil) || null,
+  });
+  if (!resolved.ok) {
+    return NextResponse.json({ error: resolved.error }, { status: 400 });
+  }
+
   const event = await prisma.event.update({
     where: { id },
     data: {
-      ...rest,
-      ...(startDate ? { startDate: new Date(startDate) } : {}),
-      ...(endDate ? { endDate: new Date(endDate) } : {}),
+      ...(input.title !== undefined ? { title: input.title } : {}),
+      ...(input.description !== undefined ? { description: input.description } : {}),
+      ...resolved.data,
     },
     include: { images: { orderBy: { order: "asc" } } },
   });

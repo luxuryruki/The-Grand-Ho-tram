@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { publicEventWhere } from "@/lib/events";
 
 /** 공개 이벤트 상세 조회. 비공개 이벤트는 404로 응답합니다. */
 export async function GET(
@@ -9,7 +10,7 @@ export async function GET(
   const { id } = await params;
 
   const event = await prisma.event.findFirst({
-    where: { id, isPublished: true },
+    where: { id, ...publicEventWhere() },
     include: { images: { orderBy: { order: "asc" } } },
   });
 

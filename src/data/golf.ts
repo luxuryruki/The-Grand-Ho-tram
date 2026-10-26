@@ -1,6 +1,6 @@
 import type { Localized } from "./hotels/types";
 
-// 더 블러프스 그랜드 호짬 골프 클럽 소개. 내용은 공식 사이트(thebluffshotram.com) 기준이며,
+// 더 블러프 그랜드 호짬 골프 클럽 소개. 내용은 공식 사이트(thebluffshotram.com) 기준이며,
 // 확인되지 않은 수치(파, 총 야드, 개장 연도, 그린피 등)는 넣지 않았습니다.
 
 export function golfText(value: Localized, locale: string): string {
@@ -39,7 +39,7 @@ export const GOLF_OVERVIEW = {
   title: { ko: "코스 소개", en: "The course" },
   paragraphs: [
     {
-      ko: "더 블러프스 그랜드 호짬은 링크스 골프의 본질을 담아 설계된 코스입니다. 거의 모든 위대한 링크스 코스가 그렇듯 해안선을 따라 자리하며, 수천 년 동안 바람이 빚어 온 거대한 모래 언덕 위와 사이를 넘나들며 코스가 이어집니다.",
+      ko: "더 블러프 그랜드 호짬은 링크스 골프의 본질을 담아 설계된 코스입니다. 거의 모든 위대한 링크스 코스가 그렇듯 해안선을 따라 자리하며, 수천 년 동안 바람이 빚어 온 거대한 모래 언덕 위와 사이를 넘나들며 코스가 이어집니다.",
       en: "The Bluffs Grand Ho Tram was designed to capture the true essence of links golf. Like almost every great links course it sits on the coastline, and the routing runs over and around towering sand dunes shaped by the elements over thousands of years.",
     },
     {
@@ -65,7 +65,7 @@ export const GOLF_AWARDS = {
 };
 
 export const GOLF_PRACTICE = {
-  title: { ko: "드라이빙 레인지 & 쇼트게임 에어리어", en: "Driving range & short-game area" },
+  title: { ko: "드라이빙 레인지 & 쇼트게임 연습장", en: "Driving range & short-game area" },
   body: {
     ko: "3,000㎡ 규모에 길이 400야드로 이어지는 드라이빙 레인지는 천연 잔디 티와 타깃 그린, 벙커를 갖춰 실제 코스에서 치는 듯한 감각을 줍니다. 소음이 닿지 않는 조용한 곳에 있어 모든 수준의 골퍼가 필요한 샷을 충분히 연습할 수 있습니다.",
     en: "The 3,000 sqm driving range stretches 400 yards, with natural grass tees, target greens and bunkers that make you feel as if you are on the course. Set in a quiet corner of the property, it lets players of every level practise every shot they will need.",
@@ -73,7 +73,7 @@ export const GOLF_PRACTICE = {
   bullets: [
     { ko: "40야드·50야드 티 그라운드", en: "40- and 50-yard tee grounds" },
     { ko: "연습용 벙커", en: "Practice bunker" },
-    { ko: "여러 개의 칩핑 에어리어", en: "Multiple chipping areas" },
+    { ko: "칩핑 연습 구역 여러 곳", en: "Multiple chipping areas" },
     { ko: "음료 키오스크, 요청 시 음식 배달", en: "Refreshment kiosk, food delivered on request" },
   ] as Localized[],
 };
@@ -98,7 +98,7 @@ export const GOLF_CLUBHOUSE = {
     {
       name: { ko: "프로숍", en: "Pro Shop" },
       body: {
-        ko: "주요 브랜드의 최신 장비와 블러프스 로고 의류를 갖추고 있으며, 렌털 클럽도 운영합니다. 프로숍은 더 그랜드 호짬 스트립 1층(메인 로비에서 도보 거리)과 클럽하우스 1층에 있습니다.",
+        ko: "주요 브랜드의 최신 장비와 블러프 로고 의류를 갖추고 있으며, 렌털 클럽도 운영합니다. 프로숍은 더 그랜드 호짬 스트립 1층(메인 로비에서 도보 거리)과 클럽하우스 1층에 있습니다.",
         en: "Stocked with the latest equipment from major brands and Bluffs-logo apparel, plus rental clubs. Pro shops are on the ground level of The Grand Ho Tram Strip, a short walk from the main lobby, and on the ground floor of the Clubhouse.",
       },
     },
@@ -122,11 +122,56 @@ export const GOLF_CLUBHOUSE = {
 export const GOLF_UI = {
   galleryTitle: { ko: "갤러리", en: "Gallery" },
   imageAlts: {
-    hero: { ko: "클럽하우스와 바다가 보이는 블러프스 항공 전경", en: "Aerial view of The Bluffs with the clubhouse and the sea" },
+    hero: { ko: "클럽하우스와 바다가 보이는 블러프 항공 전경", en: "Aerial view of The Bluffs with the clubhouse and the sea" },
     sunset: { ko: "석양이 지는 링크스 코스", en: "The links course at sunset" },
     hole12: { ko: "12번 홀 항공 전경", en: "Aerial view of hole 12" },
     hole18: { ko: "18번 홀 페어웨이와 클럽하우스", en: "Hole 18 fairway and the clubhouse" },
     bunker: { ko: "사구 사이의 벙커", en: "A bunker among the dunes" },
     towers: { ko: "그랜드 호짬 타워가 보이는 그린", en: "A green with The Grand Ho Tram towers behind" },
   } as Record<string, Localized>,
+};
+
+// 회원 전용 골프 요금 섹션 문구. 요금 숫자는 코드에 두지 않고 DB(GolfRateSheet)에서 읽습니다.
+export const GOLF_RATES = {
+  title: { ko: "골프 회원가", en: "Golf member rates" },
+  subtitle: {
+    ko: "회원님께 드리는 특별 그린피입니다. 모든 요금은 회원가로 안내해 드리며, 캐디와 카트가 포함되어 있습니다.",
+    en: "A special green fee for our members. All rates are quoted as member rates and include caddie and cart.",
+  },
+  /** 요금 숫자를 보이지 않는 동안 쓰는 소개 문구 */
+  introSubtitle: {
+    ko: "회원님께 드리는 특별 그린피를 안내해 드립니다. 라운드 일정과 인원을 알려 주시면 자세히 안내해 드립니다.",
+    en: "We offer special green fees for our members. Tell us your dates and group size and we will walk you through the details.",
+  },
+  tableHead: { ko: "구분", en: "Day" },
+  holesLabel: { ko: "홀", en: "holes" },
+  rows: {
+    weekday: { ko: "평일 (월~금)", en: "Weekdays (Mon–Fri)" },
+    weekend: { ko: "주말 (토·일)", en: "Weekends (Sat, Sun)" },
+    holiday: { ko: "공휴일", en: "Public holiday" },
+  } as Record<"weekday" | "weekend" | "holiday", Localized>,
+  extrasTitle: { ko: "추가 요금", en: "Other fees" },
+  twilight: {
+    ko: "트와일라이트 (건기 오후 3시부터, 우기 오후 4시부터 일몰까지)",
+    en: "Twilight: from 3 pm (dry-season scorecard) or 4 pm (wet-season scorecard) until dark",
+  },
+  caddie: { ko: "캐디 예약비", en: "Caddie booking fee" },
+  notes: [
+    { ko: "요금에는 특별소비세 20%와 부가세 10%가 포함되어 있습니다.", en: "Rates include 20% special consumption tax and 10% VAT." },
+    { ko: "결제는 베트남 동(VND)으로만 가능합니다.", en: "Payment must be made in Vietnamese dong (VND)." },
+  ] as Localized[],
+  calcTitle: { ko: "날짜별 요금 확인", en: "Check a date" },
+  calcDate: { ko: "라운드 날짜", en: "Round date" },
+  calcHoles: { ko: "홀 수", en: "Holes" },
+  calcPick: { ko: "날짜를 선택하면 해당 날짜에 적용되는 요금을 보여 드립니다.", en: "Select a date to see the rate that applies." },
+  calcOutOfRange: {
+    ko: "선택하신 날짜는 현재 안내된 요금표의 적용 기간 밖입니다. 해당 날짜의 요금은 문의 시 안내해 드립니다.",
+    en: "This date is outside the period of the current rate sheet. Rates for it are provided when you inquire.",
+  },
+  dayType: {
+    weekday: { ko: "평일 요금", en: "Weekday rate" },
+    weekend: { ko: "주말 요금", en: "Weekend rate" },
+    holiday: { ko: "공휴일 요금", en: "Public holiday rate" },
+  } as Record<"weekday" | "weekend" | "holiday", Localized>,
+  holidayLegend: { ko: "공휴일 요금 적용일", en: "Public holiday rate" },
 };

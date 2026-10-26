@@ -14,7 +14,8 @@
     "db:studio": "prisma studio",
     "db:seed": "tsx prisma/seed.ts",
     "db:import-rates": "tsx prisma/import-rates.ts",
-    "db:seed-holidays": "tsx prisma/seed-holidays.ts"
+    "db:seed-holidays": "tsx prisma/seed-holidays.ts",
+    "db:import-golf-rates": "tsx prisma/import-golf-rates.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.124.0",

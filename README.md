@@ -1,4 +1,4 @@
-# THE GRAND — 여행 · 호텔 프로모션 웹사이트
+# The Concierge Ho Tram — 여행 · 호텔 프로모션 웹사이트
 
 Next.js(App Router) + TypeScript 기반의 여행/호텔 프로모션 웹사이트입니다. 이벤트·프로모션 안내, 호텔/차량 예약 요청, AI 여행 컨시어지 챗봇, 관리자 대시보드로 구성되어 있습니다.
 

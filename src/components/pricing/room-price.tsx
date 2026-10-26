@@ -2,6 +2,7 @@
 
 import { useMemo } from "react";
 import { useTranslations } from "next-intl";
+import { PRICES_VISIBLE } from "@/lib/features";
 import { formatVnd, quoteStay, type RateVariant } from "@/lib/pricing";
 import type { HotelPriceInfo } from "@/lib/rates";
 
@@ -25,8 +26,10 @@ export function RoomPrice({
   const t = useTranslations("pricing");
   const holidaySet = useMemo(() => new Set(holidays), [holidays]);
 
+  if (!PRICES_VISIBLE) return null;
+
   if (variants.length === 0) {
-    return <p className="text-sm text-fg-muted">{t("noRate")}</p>;
+    return null;
   }
 
   const quotes = variants.map((v) => quoteStay(v, checkIn, checkOut, holidaySet, info?.validFrom));

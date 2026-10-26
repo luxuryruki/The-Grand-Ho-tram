@@ -1,4 +1,5 @@
 import "server-only";
+import type { Prisma } from "@/generated/prisma/client";
 import { prisma } from "./prisma";
 
 /**
@@ -7,7 +8,7 @@ import { prisma } from "./prisma";
  */
 export async function logAnalyticsEvent(
   eventType: string,
-  options?: { sessionId?: string | null; metadata?: Record<string, unknown> }
+  options?: { sessionId?: string | null; metadata?: Prisma.InputJsonObject }
 ) {
   try {
     await prisma.analyticsEvent.create({

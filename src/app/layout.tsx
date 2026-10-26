@@ -9,11 +9,11 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "THE GRAND",
-    template: "%s · THE GRAND",
+    default: "THE CONCIERGE HO TRAM",
+    template: "%s · THE CONCIERGE HO TRAM",
   },
   description:
-    "THE GRAND — premium travel, hotel & vehicle reservation experience.",
+    "The Concierge Ho Tram — hotel, golf and travel inquiries for The Grand Ho Tram resort complex.",
 };
 
 // 이 파일은 앱 전체(공개 페이지 + /admin)의 최상위 <html>/<body>를 정의합니다.

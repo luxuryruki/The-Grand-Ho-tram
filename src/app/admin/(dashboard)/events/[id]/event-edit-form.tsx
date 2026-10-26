@@ -4,16 +4,12 @@ import { useRef, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, ImagePlus, Trash2, UploadCloud } from "lucide-react";
+import { EventFields, toEventPayload, type EventFormValues } from "../event-fields";
 
 type EventImage = { id: string; url: string };
 
-type EventData = {
+type EventData = EventFormValues & {
   id: string;
-  title: string;
-  description: string;
-  startDate: string;
-  endDate: string;
-  isPublished: boolean;
   images: EventImage[];
 };
 
@@ -21,11 +17,16 @@ export function EventEditForm({ event }: { event: EventData }) {
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const [title, setTitle] = useState(event.title);
-  const [description, setDescription] = useState(event.description);
-  const [startDate, setStartDate] = useState(event.startDate);
-  const [endDate, setEndDate] = useState(event.endDate);
-  const [isPublished, setIsPublished] = useState(event.isPublished);
+  const [values, setValues] = useState<EventFormValues>({
+    title: event.title,
+    description: event.description,
+    kind: event.kind,
+    startDate: event.startDate,
+    endDate: event.endDate,
+    isPublished: event.isPublished,
+    publishFrom: event.publishFrom,
+    publishUntil: event.publishUntil,
+  });
   const [images, setImages] = useState(event.images);
 
   const [saving, setSaving] = useState(false);
@@ -42,7 +43,7 @@ export function EventEditForm({ event }: { event: EventData }) {
       const res = await fetch(`/api/admin/events/${event.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title, description, startDate, endDate, isPublished }),
+        body: JSON.stringify(toEventPayload(values)),
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
@@ -50,8 +51,8 @@ export function EventEditForm({ event }: { event: EventData }) {
         return;
       }
       setSaved(true);
+      router.push("/admin/events");
       router.refresh();
-      setTimeout(() => setSaved(false), 2000);
     } catch {
       setError("네트워크 오류가 발생했습니다.");
     } finally {
@@ -163,56 +164,7 @@ export function EventEditForm({ event }: { event: EventData }) {
         onSubmit={handleSave}
         className="mt-6 space-y-5 rounded-2xl border border-border bg-bg-elevated p-6"
       >
-        <div>
-          <label className="mb-1.5 block text-sm text-fg-muted">제목</label>
-          <input
-            required
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className={inputClass}
-          />
-        </div>
-        <div>
-          <label className="mb-1.5 block text-sm text-fg-muted">설명</label>
-          <textarea
-            required
-            rows={6}
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            className={inputClass}
-          />
-        </div>
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="mb-1.5 block text-sm text-fg-muted">시작일</label>
-            <input
-              type="date"
-              required
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-              className={inputClass}
-            />
-          </div>
-          <div>
-            <label className="mb-1.5 block text-sm text-fg-muted">종료일</label>
-            <input
-              type="date"
-              required
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
-              className={inputClass}
-            />
-          </div>
-        </div>
-        <label className="flex items-center gap-2.5 text-sm text-fg">
-          <input
-            type="checkbox"
-            checked={isPublished}
-            onChange={(e) => setIsPublished(e.target.checked)}
-            className="h-4 w-4 rounded border-border-strong accent-accent"
-          />
-          공개 상태
-        </label>
+        <EventFields values={values} onChange={setValues} publishLabel="공개 상태" isNew={false} />
 
         {error && (
           <p className="rounded-lg bg-danger/10 px-4 py-3 text-sm text-danger">{error}</p>
@@ -229,6 +181,3 @@ export function EventEditForm({ event }: { event: EventData }) {
     </div>
   );
 }
-
-const inputClass =
-  "w-full rounded-lg border border-border bg-bg px-4 py-2.5 text-sm text-fg focus:border-border-strong focus:outline-none";

@@ -21,9 +21,11 @@ const STATUS_STYLE: Record<string, string> = {
 export function ReservationStatusSelect({
   id,
   status,
+  basePath = "/api/admin/reservations",
 }: {
   id: string;
   status: string;
+  basePath?: string;
 }) {
   const router = useRouter();
   const [value, setValue] = useState(status);
@@ -33,7 +35,7 @@ export function ReservationStatusSelect({
     setValue(next);
     setLoading(true);
     try {
-      await fetch(`/api/admin/reservations/${id}`, {
+      await fetch(`${basePath}/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status: next }),

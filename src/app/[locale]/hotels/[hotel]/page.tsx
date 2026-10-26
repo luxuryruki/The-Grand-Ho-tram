@@ -9,8 +9,7 @@ import { LinkButton } from "@/components/ui/button";
 import { HotelRoomBrowser } from "@/components/hotels/hotel-room-browser";
 import { getHotel, hotelImageSrc, pickText } from "@/data/hotels";
 import { buildHotelOptions } from "@/data/hotels/hotel-options";
-import { parseIsoDate } from "@/lib/pricing";
-import { getRateBook } from "@/lib/rates";
+import { getPublicRateBook } from "@/lib/rates";
 
 export const dynamic = "force-dynamic";
 
@@ -25,23 +24,18 @@ export async function generateMetadata({
   return { title: hotel.name, description: pickText(hotel.description, locale) };
 }
 
-const validDate = (v: string | undefined) => (v && parseIsoDate(v) !== null ? v : "");
-
 export default async function HotelPage({
   params,
-  searchParams,
 }: {
   params: Promise<{ locale: string; hotel: string }>;
-  searchParams: Promise<{ checkIn?: string; checkOut?: string }>;
 }) {
   const { locale, hotel: hotelId } = await params;
-  const query = await searchParams;
   setRequestLocale(locale);
   const hotel = getHotel(hotelId);
   if (!hotel) notFound();
 
   const t = await getTranslations({ locale, namespace: "hotels" });
-  const book = await getRateBook();
+  const book = await getPublicRateBook();
   const option = buildHotelOptions(locale, book).find((h) => h.id === hotel.id)!;
 
   return (
@@ -88,7 +82,7 @@ export default async function HotelPage({
         </div>
 
         <LinkButton
-          href={`/reserve?source=${encodeURIComponent(`hotel:${hotel.id}`)}`}
+          href={`/inquiry?source=${encodeURIComponent(`hotel:${hotel.id}`)}`}
           size="lg"
           className="shrink-0"
         >
@@ -100,8 +94,6 @@ export default async function HotelPage({
         <HotelRoomBrowser
           hotel={option}
           holidays={book.holidays}
-          initialCheckIn={validDate(query.checkIn)}
-          initialCheckOut={validDate(query.checkOut)}
         />
       </div>
 

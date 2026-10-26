@@ -30,13 +30,13 @@ export async function generateMetadata({
     },
     ...(locale === "en"
       ? {
-          title: { default: "THE GRAND", template: "%s · THE GRAND" },
+          title: { default: "The Concierge Ho Tram", template: "%s · The Concierge Ho Tram" },
           description:
-            "THE GRAND — premium travel, hotel & vehicle reservation experience.",
+            "The Concierge Ho Tram — hotel, golf and travel inquiries for The Grand Ho Tram resort complex.",
         }
       : {
-          title: { default: "더 그랜드", template: "%s · 더 그랜드" },
-          description: "더 그랜드 — 프리미엄 여행, 호텔·차량 예약 경험.",
+          title: { default: "더 컨시어지 호짬", template: "%s · 더 컨시어지 호짬" },
+          description: "더 컨시어지 호짬 — 더 그랜드 호짬 복합 리조트의 호텔·골프 안내와 문의.",
         }),
   };
 }

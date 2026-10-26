@@ -55,11 +55,12 @@ export function StayQuote({
     [variant, checkIn, checkOut, holidaySet, info?.validFrom]
   );
 
+  // 요금이 등록되지 않은 객실은 요금 영역 자체를 보여주지 않습니다.
+  if (hasRoom && !variant) return null;
+
   let body: React.ReactNode;
   if (!hasRoom) {
     body = <p className="text-sm text-fg-muted">{t("needRoom")}</p>;
-  } else if (!variant) {
-    body = <p className="text-sm text-fg-muted">{t("noRate")}</p>;
   } else if (!quote || !quote.ok) {
     const reason = quote && !quote.ok ? quote.reason : "incomplete";
     body = (
@@ -137,9 +138,16 @@ export function StayQuote({
           )}
           {hasHoliday && <p className="break-keep">{t("holidayNote")}</p>}
           {extras.length > 0 && (
-            <p className="break-keep">
-              {t("extraPerson")}: {extras.join(" · ")}
-            </p>
+            <div className="pt-1">
+              <p className="break-keep">{t("extraPerson")}</p>
+              <ul className="mt-1.5 list-disc space-y-1 pl-4 text-fg-muted marker:text-fg-subtle">
+                {extras.map((line) => (
+                  <li key={line} className="break-keep">
+                    {line}
+                  </li>
+                ))}
+              </ul>
+            </div>
           )}
         </div>
 

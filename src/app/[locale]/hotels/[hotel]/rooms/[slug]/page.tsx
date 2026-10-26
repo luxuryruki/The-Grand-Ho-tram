@@ -7,6 +7,7 @@ import { Container } from "@/components/site/container";
 import { Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal";
 import { RoomCard } from "@/components/hotels/room-card";
 import { RoomGallery } from "@/components/hotels/room-gallery";
+import { RoomInquiry } from "@/components/hotels/room-inquiry";
 import { RoomRateCalculator } from "@/components/hotels/room-rate-calculator";
 import { RoomPrice } from "@/components/pricing/room-price";
 import {
@@ -18,7 +19,8 @@ import {
 } from "@/data/hotels";
 import { buildHotelOptions } from "@/data/hotels/hotel-options";
 import { parseIsoDate } from "@/lib/pricing";
-import { getRateBook } from "@/lib/rates";
+import { PRICES_VISIBLE } from "@/lib/features";
+import { getPublicRateBook } from "@/lib/rates";
 
 export const dynamic = "force-dynamic";
 
@@ -58,7 +60,7 @@ export default async function RoomPage({
   if (!hotel || !room) notFound();
 
   const t = await getTranslations({ locale, namespace: "hotels" });
-  const book = await getRateBook();
+  const book = await getPublicRateBook();
   const option = buildHotelOptions(locale, book).find((h) => h.id === hotel.id)!;
   const roomOption = option.rooms.find((r) => r.slug === room.slug)!;
   const amenities = groupAmenities(room, locale);
@@ -140,16 +142,20 @@ export default async function RoomPage({
             ))}
           </dl>
 
-          <RoomRateCalculator
-            hotelId={hotel.id}
-            roomSlug={room.slug}
-            variants={roomOption.variants}
-            holidays={book.holidays}
-            info={option.info}
-            initialCheckIn={validDate(query.checkIn)}
-            initialCheckOut={validDate(query.checkOut)}
-            initialRateKey={query.rate ?? ""}
-          />
+          {PRICES_VISIBLE ? (
+            <RoomRateCalculator
+              hotelId={hotel.id}
+              roomSlug={room.slug}
+              variants={roomOption.variants}
+              holidays={book.holidays}
+              info={option.info}
+              initialCheckIn={validDate(query.checkIn)}
+              initialCheckOut={validDate(query.checkOut)}
+              initialRateKey={query.rate ?? ""}
+            />
+          ) : (
+            <RoomInquiry hotelId={hotel.id} roomSlug={room.slug} />
+          )}
         </Reveal>
       </div>
 

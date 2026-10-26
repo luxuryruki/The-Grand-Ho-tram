@@ -21,6 +21,10 @@ function getSessionSecret(): Uint8Array {
       "SESSION_SECRET 환경변수가 설정되지 않았거나 너무 짧습니다 (16자 이상 필요). .env 파일을 확인하세요."
     );
   }
+  // 운영에서는 .env.example의 샘플 값이나 짧은 값으로 세션을 서명하지 못하게 합니다(누구나 세션을 위조할 수 있기 때문).
+  if (process.env.NODE_ENV === "production" && (secret.length < 32 || /replace-with|change-me/i.test(secret))) {
+    throw new Error("운영 환경의 SESSION_SECRET은 샘플 값이 아닌 32자 이상의 랜덤 문자열이어야 합니다. (생성: openssl rand -base64 48)");
+  }
   return new TextEncoder().encode(secret);
 }
 

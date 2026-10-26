@@ -5,7 +5,11 @@ import { logAnalyticsEvent } from "@/lib/analytics";
 const schema = z.object({
   eventType: z.string().min(1),
   sessionId: z.string().optional().nullable(),
-  metadata: z.record(z.string(), z.unknown()).optional(),
+  // JSON으로 저장할 수 있는 값만 받고, 누구나 보낼 수 있는 API라서 크기를 제한합니다.
+  metadata: z
+    .record(z.string(), z.json())
+    .refine((m) => JSON.stringify(m).length <= 2000, "metadata too large")
+    .optional(),
 });
 
 /** 클라이언트에서 보내는 범용 이벤트 로그 (page_view 등). 인증이 필요하지 않습니다. */

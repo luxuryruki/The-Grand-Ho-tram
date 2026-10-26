@@ -3,23 +3,27 @@
     "home": "Home",
     "hotels": "Hotels",
     "golf": "Golf",
+    "casino": "Casino",
     "events": "Events",
-    "reserve": "Reserve",
     "consult": "AI Consult",
     "openMenu": "Open menu",
-    "closeMenu": "Close menu"
+    "closeMenu": "Close menu",
+    "inquiry": "Contact us"
   },
   "footer": {
-    "description": "Curated hotels and private vehicles — plan your perfect journey with THE GRAND.",
+    "description": "Hotels, golf and private transfers at the Ho Tram resort — The Concierge Ho Tram helps you plan a smooth trip.",
     "linkHotels": "Hotels",
     "linkGolf": "The Bluffs Golf",
+    "linkCasino": "Casino facility",
     "linkEvents": "Events & Promotions",
-    "linkReserve": "Hotel & Vehicle Reservation",
-    "copyright": "© {year} THE GRAND. All rights reserved."
+    "copyright": "© {year} The Concierge Ho Tram. All rights reserved.",
+    "linkInquiry": "Contact us",
+    "independent": "The Concierge Ho Tram is an independently operated guide and is not the official website of any hotel, golf course or facility featured here. All names and trademarks belong to their respective owners.",
+    "tagline": "Your Private Gateway to Ho Tram"
   },
   "hotels": {
     "pageTitle": "Our Hotels",
-    "pageSubtitle": "Meet the hotels of THE GRAND in Ho Tram. Explore room types and facilities before you book.",
+    "pageSubtitle": "Meet the hotels of The Grand Ho Tram resort complex. Explore room types and facilities before you book.",
     "roomCount": "{count} room types",
     "viewRooms": "View rooms",
     "backToHotels": "All hotels",
@@ -69,12 +73,29 @@
     "invalidOrder": "Check-out must be after check-in.",
     "tooLong": "Rates can be calculated for up to {max} nights. Longer stays are quoted during consultation.",
     "beforeValid": "Rates are available for stays from {date} onwards. Rates for earlier dates are provided during consultation.",
-    "noRate": "Rates for this room are provided during consultation.",
     "fromWeekday": "From {price} / night (weekday)",
     "fromTotal": "{nights, plural, one {# night} other {# nights}} from {price}",
     "totalOnly": "{nights, plural, one {# night} other {# nights}} {price}",
     "variant": "Room configuration",
-    "needRoom": "Select a room to see the estimated rate."
+    "needRoom": "Select a room to see the estimated rate.",
+    "datePlaceholder": "Select date",
+    "calendarLabel": "Select a date",
+    "pickCheckIn": "Select your check-in date",
+    "pickCheckOut": "Select your check-out date",
+    "clearDates": "Clear",
+    "holidayLegend": "Public holiday rate applies",
+    "prevMonth": "Previous month",
+    "nextMonth": "Next month",
+    "timePlaceholder": "Select time",
+    "hourLabel": "Hour",
+    "minuteLabel": "Minute"
+  },
+  "membership": {
+    "notice": "All rates are quoted as member rates.",
+    "bannerEyebrow": "MEMBERS ONLY",
+    "bannerTitle": "A special rate, just for our members",
+    "bannerBody": "All rates are quoted as member rates. Enjoy hotel rooms and golf at member rates.",
+    "bannerCta": "Contact us"
   },
   "consult": {
     "title": "AI Travel Concierge",
@@ -89,28 +110,28 @@
   },
   "home": {
     "hero": {
-      "eyebrow": "PREMIUM TRAVEL & STAY",
-      "titleLine1": "A journey",
-      "titleLine2": "made for you",
-      "subtitle": "Curated hotels and private vehicles — plan the perfect trip with THE GRAND.",
-      "ctaPrimary": "Request a reservation",
+      "eyebrow": "Your Private Gateway to Ho Tram",
+      "titleLine1": "The golden key",
+      "titleLine2": "to Ho Tram, your concierge",
+      "subtitle": "Curated hotels and private vehicles — plan your perfect trip with The Concierge Ho Tram.",
+      "ctaPrimary": "Contact us",
       "ctaSecondary": "See current events"
     },
     "highlights": {
-      "eyebrow": "WHY THE GRAND",
-      "title": "What makes THE GRAND different",
+      "eyebrow": "WHY THE CONCIERGE",
+      "title": "What makes The Concierge Ho Tram different",
       "items": [
         {
-          "title": "Curated hotels",
-          "description": "From standard to suite, only verified partner hotels."
+          "title": "Ho Tram resort specialists",
+          "description": "Compare the rooms and facilities of all three hotels and ask us about them in one place."
         },
         {
           "title": "Private vehicles",
-          "description": "Pickup to destination, exactly when you need it."
+          "description": "From pickup to transfers, use only what you need, in comfort."
         },
         {
-          "title": "Instant live support",
-          "description": "Connect with our team directly via KakaoTalk or WhatsApp."
+          "title": "Quick replies",
+          "description": "We can reach you on KakaoTalk or Telegram, whichever you prefer."
         }
       ]
     },
@@ -121,20 +142,39 @@
       "empty": "No events are running right now. Check back soon."
     },
     "cta": {
-      "title": "Send a reservation request today",
-      "subtitle": "Request a hotel and vehicle together — our team will confirm shortly.",
-      "button": "Request a reservation"
+      "title": "Message us on KakaoTalk",
+      "subtitle": "Scan the QR code with KakaoTalk to join the chat room and our team will walk you through the details.",
+      "button": "Chat with us on KakaoTalk",
+      "qrAlt": "KakaoTalk inquiry QR code",
+      "qrCaption": "Scan the QR code with KakaoTalk"
+    },
+    "guide": {
+      "title": "Your dedicated concierge\nfor The Grand Ho Tram resort",
+      "body": "About two hours by road from Ho Chi Minh City, The Grand Ho Tram resort complex sits on the Ho Tram coast. From the rooms and facilities of its three hotels to The Bluffs golf course and transfers, we guide first-time visitors step by step to choices that fit their schedule and party.",
+      "statHotels": "Hotels",
+      "statRooms": "Total rooms",
+      "statHoles": "Hole links golf course",
+      "statSupport": "Support",
+      "statSupportValue": "Korean",
+      "hotelsTitle": "Hotel guide",
+      "hotelsBody": "Compare rooms and facilities across the three hotels and get advice on the right room for your trip.",
+      "golfTitle": "Golf & resort planning",
+      "golfBody": "We help you plan rounds at The Bluffs links course together with your stay.",
+      "transferTitle": "Transfers & vehicles",
+      "transferBody": "From airport pickup to resort transfers, we arrange a vehicle to fit your schedule.",
+      "statHolesValue": "18"
     }
   },
   "events": {
     "pageTitle": "Events & Promotions",
-    "pageSubtitle": "Explore THE GRAND's current promotions and seasonal events.",
+    "pageSubtitle": "Explore The Concierge Ho Tram's current promotions and seasonal events.",
     "empty": "No published events right now.",
-    "period": "Period",
     "backToList": "Back to list",
-    "cta": "Request a reservation for this event",
+    "cta": "Inquire about this event",
     "notFoundTitle": "Event not found",
-    "notFoundBody": "This event may have been removed or unpublished."
+    "notFoundBody": "This event may have been removed or unpublished.",
+    "kindPeriod": "Ongoing event",
+    "kindSingle": "One-day event"
   },
   "reserve": {
     "pageTitle": "Hotel & Vehicle Reservation",
@@ -195,5 +235,30 @@
   "common": {
     "loading": "Loading...",
     "close": "Close"
+  },
+  "inquiry": {
+    "pageTitle": "Contact us on KakaoTalk",
+    "pageSubtitle": "Scan the QR code below with KakaoTalk to join the chat room and leave your questions. Our team will get back to you.",
+    "lead": "We'll gladly walk you through member rates for hotel rooms and golf in detail.",
+    "qrAlt": "KakaoTalk inquiry QR code",
+    "qrCaption": "Scan the QR code with KakaoTalk",
+    "mobileHint": "On your phone? Tap the button below to join right away.",
+    "openButton": "Chat with us on KakaoTalk",
+    "stepsTitle": "How to reach us",
+    "steps": [
+      "Scan the QR code with KakaoTalk's QR scanner or your phone camera.",
+      "Join the chat room and leave your question.",
+      "Our team will reply to you in the chat."
+    ],
+    "guideTitle": "What we can help with",
+    "guideItems": [
+      "Member rates for hotel rooms",
+      "Member rates for golf",
+      "Reservations and transfers",
+      "Other facilities"
+    ],
+    "contextLabel": "Regarding",
+    "contextHint": "Please include the details above in the chat so we can help you faster.",
+    "nights": "{count, plural, one {# night} other {# nights}}"
   }
 }

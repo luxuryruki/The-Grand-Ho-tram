@@ -1,5 +1,6 @@
 import { TelegramNotificationSender } from "./telegram";
 import type {
+  MembershipNotificationPayload,
   NotificationSender,
   ReservationNotificationPayload,
 } from "./types";
@@ -32,4 +33,16 @@ export async function notifyReservationCreated(
   });
 }
 
-export type { NotificationSender, ReservationNotificationPayload };
+/** 문의(예약·회원가 안내)가 들어오면 등록된 모든 채널로 알림을 보냅니다. */
+export async function notifyMembershipInquiry(payload: MembershipNotificationPayload) {
+  const results = await Promise.allSettled(
+    senders.map((sender) => sender.sendMembershipAlert(payload))
+  );
+  results.forEach((result, i) => {
+    if (result.status === "rejected") {
+      console.error(`[notifications:${senders[i].channel}] 알림 발송 실패`, result.reason);
+    }
+  });
+}
+
+export type { NotificationSender, ReservationNotificationPayload, MembershipNotificationPayload };

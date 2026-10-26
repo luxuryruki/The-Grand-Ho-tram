@@ -1,4 +1,4 @@
-// Prisma schema — THE GRAND
+// Prisma schema — The Concierge Ho Tram
 // 로컬 개발: docker-compose로 띄운 Postgres. 운영: Supabase Postgres.
 // 참고: 모든 모델에 createdAt/updatedAt을 기본으로 두어, 추후 세일즈포스 등
 // 외부 분석 플랫폼으로 데이터를 내보내기 쉽도록 했습니다.
@@ -31,14 +31,26 @@ enum ConsultationRole {
   ASSISTANT
 }
 
+/// 이벤트 형태: 기간 이벤트(시작일~종료일) / 하루 이벤트(하루만 진행, startDate == endDate)
+enum EventKind {
+  PERIOD
+  SINGLE_DAY
+}
+
 /// 이벤트 / 프로모션
 model Event {
-  id          String   @id @default(cuid())
-  title       String
-  description String   @db.Text
-  startDate   DateTime
-  endDate     DateTime
-  isPublished Boolean  @default(false)
+  id           String    @id @default(cuid())
+  title        String
+  description  String    @db.Text
+  kind         EventKind @default(PERIOD)
+  /// 이벤트가 진행되는 날짜(하루 이벤트는 startDate와 endDate가 같습니다)
+  startDate    DateTime
+  endDate      DateTime
+  /// 공개 스위치. 꺼져 있으면 게시 기간과 상관없이 비공개입니다.
+  isPublished  Boolean   @default(false)
+  /// 게시 기간: 사이트에 노출되는 기간(한국 시간 기준). 비어 있으면 그 방향으로 제한이 없습니다.
+  publishFrom  DateTime?
+  publishUntil DateTime?
 
   images EventImage[]
 
@@ -224,6 +236,35 @@ model PublicHoliday {
   date   DateTime @unique @db.Date
   nameKo String
   nameEn String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+/// 회원 가입 문의. 이름·연락처를 남기면 담당자가 연락해 가입을 안내합니다.
+model MembershipInquiry {
+  id               String            @id @default(cuid())
+  name             String
+  phone            String
+  preferredChannel PreferredChannel  @default(KAKAO)
+  message          String?           @db.Text
+  /// 유입 경로. 예: "golf", "hotels", "home"
+  source           String?
+  /// 개인정보 수집·이용에 동의한 시각
+  consentAt        DateTime
+  status           ReservationStatus @default(NEW)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status, createdAt])
+}
+
+/// 골프 요금표(회원 전용 요금). 구조는 src/lib/golf-rates.ts 의 스키마를 따르며
+/// 원본 파일은 저장소에 올리지 않고 `npm run db:import-golf-rates` 로 DB에만 올립니다.
+model GolfRateSheet {
+  id   String @id
+  data Json
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

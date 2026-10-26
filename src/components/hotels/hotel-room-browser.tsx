@@ -1,59 +1,40 @@
-"use client";
-
-import { useState } from "react";
 import { useTranslations } from "next-intl";
+import { PRICES_VISIBLE } from "@/lib/features";
 import { Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal";
+import { MemberNotice } from "@/components/membership/member-notice";
 import { PriceDisclaimer } from "@/components/pricing/price-disclaimer";
 import { RoomPrice } from "@/components/pricing/room-price";
-import { StayDates } from "@/components/pricing/stay-dates";
 import type { HotelOption } from "@/data/hotels/hotel-options";
-import { parseIsoDate } from "@/lib/pricing";
 import { RoomCard } from "./room-card";
 
-/** 호텔 페이지의 객실 목록. 체크인·체크아웃을 고르면 모든 객실 카드에 그 기간의 요금이 바로 계산되어 표시됩니다. */
+/** 호텔 페이지의 객실 목록. 카드에는 DB 요금표의 평일 1박 최저 요금이 표시됩니다. */
 export function HotelRoomBrowser({
   hotel,
   holidays,
-  initialCheckIn,
-  initialCheckOut,
 }: {
   hotel: HotelOption;
   holidays: string[];
-  initialCheckIn: string;
-  initialCheckOut: string;
 }) {
   const t = useTranslations("hotels");
   const p = useTranslations("pricing");
-  const [dates, setDates] = useState({ checkIn: initialCheckIn, checkOut: initialCheckOut });
-
-  const datesQuery =
-    parseIsoDate(dates.checkIn) !== null && parseIsoDate(dates.checkOut) !== null
-      ? `?checkIn=${dates.checkIn}&checkOut=${dates.checkOut}`
-      : "";
 
   return (
     <div>
-      <div className="rounded-2xl border border-border bg-bg-elevated p-5 sm:p-6">
-        <h3 className="text-sm font-semibold text-fg">{p("datesTitle")}</h3>
-        <div className="mt-3 max-w-md">
-          <StayDates
-            checkIn={dates.checkIn}
-            checkOut={dates.checkOut}
-            min={hotel.info?.validFrom}
-            onChange={setDates}
-          />
-        </div>
-        <div className="mt-4 space-y-1">
-          {hotel.info && (
-            <p className="break-keep text-xs text-fg-subtle">
-              {p("includes", {
-                service: hotel.info.serviceChargePercent,
-                tax: hotel.info.taxPercent,
-              })}
-            </p>
-          )}
-          <PriceDisclaimer />
-        </div>
+      <div className="space-y-4">
+        {PRICES_VISIBLE && (
+          <div className="space-y-1">
+            {hotel.info && (
+              <p className="break-keep text-xs text-fg-subtle">
+                {p("includes", {
+                  service: hotel.info.serviceChargePercent,
+                  tax: hotel.info.taxPercent,
+                })}
+              </p>
+            )}
+            <PriceDisclaimer />
+          </div>
+        )}
+        <MemberNotice />
       </div>
 
       <h2 className="mt-14 text-2xl font-semibold text-fg">{t("roomsTitle")}</h2>
@@ -86,15 +67,13 @@ export function HotelRoomBrowser({
               {rooms.map((room) => (
                 <RevealItem key={room.slug}>
                   <RoomCard
-                    href={`/hotels/${hotel.id}/rooms/${room.slug}${datesQuery}`}
+                    href={`/hotels/${hotel.id}/rooms/${room.slug}`}
                     name={room.name}
                     thumb={room.thumb}
                     summary={room.summary}
                     price={
                       <RoomPrice
                         variants={room.variants}
-                        checkIn={dates.checkIn}
-                        checkOut={dates.checkOut}
                         holidays={holidays}
                         info={hotel.info}
                       />

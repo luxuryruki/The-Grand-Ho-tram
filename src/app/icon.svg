@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="g" x1="8" y1="6" x2="56" y2="58" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f6e4ae"/>
+      <stop offset="0.35" stop-color="#d9b26b"/>
+      <stop offset="0.7" stop-color="#b98a3e"/>
+      <stop offset="1" stop-color="#e9cd8f"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="#0b1a2a"/>
+  <g fill="url(#g)" transform="translate(32 32) scale(0.9) translate(-32 -32) rotate(-45 32 32)">
+    <!-- 손잡이: 클로버(세 잎) 장식 고리 -->
+    <circle cx="32" cy="16" r="9.6"/>
+    <circle cx="32" cy="5.6" r="4.6"/>
+    <circle cx="21.6" cy="16" r="4.6"/>
+    <circle cx="42.4" cy="16" r="4.6"/>
+    <!-- 샤프트와 칼라 -->
+    <path d="M29.6 25h4.8v31.4l-2.4 2.6l-2.4-2.6Z"/>
+    <rect x="26.4" y="27.6" width="11.2" height="3.4" rx="1.7"/>
+    <rect x="27.8" y="32.8" width="8.4" height="2.6" rx="1.3"/>
+    <rect x="26.4" y="37" width="11.2" height="3.4" rx="1.7"/>
+    <!-- 비트(이빨) -->
+    <path d="M34.4 45h6.2l2.2 1.8v3.6l-2.2 1.2h-6.2Z"/>
+    <path d="M34.4 53h4.4l1.8 1.4v2.2l-1.8 1.2h-4.4Z"/>
+  </g>
+  <g transform="translate(32 32) scale(0.9) translate(-32 -32) rotate(-45 32 32)">
+    <circle cx="32" cy="16" r="4.4" fill="#0b1a2a"/>
+    <circle cx="32" cy="16" r="7.4" fill="none" stroke="#17130a" stroke-opacity="0.3" stroke-width="0.8"/>
+  </g>
+</svg>

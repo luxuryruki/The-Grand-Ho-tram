@@ -1,5 +1,6 @@
 import { Bot } from "grammy";
 import type {
+  MembershipNotificationPayload,
   NotificationSender,
   ReservationNotificationPayload,
 } from "./types";
@@ -70,5 +71,26 @@ export class TelegramNotificationSender implements NotificationSender {
     }
 
     await bot.api.sendMessage(chatId, formatMessage(payload));
+  }
+
+  async sendMembershipAlert(payload: MembershipNotificationPayload) {
+    const chatId = process.env.TELEGRAM_CHAT_ID;
+    const bot = this.getBot();
+    if (!bot || !chatId) {
+      console.warn(
+        "[notifications:telegram] TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID 가 설정되지 않아 알림을 건너뜁니다."
+      );
+      return;
+    }
+    const lines = [
+      "🔔 새 문의가 도착했습니다",
+      "",
+      `• 이름 / 연락처: ${payload.name} / ${payload.phone}`,
+      `• 선호 연락 수단: ${payload.preferredChannel}`,
+      payload.message ? `• 문의 내용: ${payload.message}` : null,
+      payload.source ? `• 유입 경로: ${payload.source}` : null,
+      `• 문의 ID: ${payload.id}`,
+    ].filter((line): line is string => Boolean(line));
+    await bot.api.sendMessage(chatId, lines.join("\n"));
   }
 }

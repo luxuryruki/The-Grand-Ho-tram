@@ -4,11 +4,11 @@ export const intercontinental: Hotel = {
   id: "intercontinental",
   name: "InterContinental Grand Ho Tram",
   tagline: {
-    ko: "베트남 청정 해안 위의 럭셔리",
+    ko: "베트남 청정 해안 위의 럭셔리 호텔",
     en: "Luxury on Vietnam's untouched coastline"
   },
   description: {
-    ko: "호치민시에서 약 2시간 거리, 2.2km에 이르는 청정 해안선 위에 자리한 인터컨티넨탈 그랜드 호짬은 더 그랜드 호짬 복합 리조트의 중심 호텔입니다. 모든 객실에서 바다 또는 더 블러프스 골프 코스의 사구 풍경을 감상할 수 있으며, 단지 내 다이닝과 엔터테인먼트, 나이트라이프도 함께 즐기실 수 있습니다.",
+    ko: "호치민시에서 약 2시간 거리, 2.2km에 이르는 청정 해안선 위에 자리한 인터컨티넨탈 그랜드 호짬은 더 그랜드 호짬 복합 리조트의 중심 호텔입니다. 모든 객실에서 바다 또는 더 블러프 골프 코스의 사구 풍경을 감상할 수 있으며, 단지 내 다이닝과 엔터테인먼트, 나이트라이프도 함께 즐기실 수 있습니다.",
     en: "Set on 2.2 km of untouched coastline about two hours from Ho Chi Minh City, the InterContinental Grand Ho Tram is a centrepiece of The Grand Ho Tram complex. Every room looks out over the ocean or the dunes of The Bluffs golf course, and guests can enjoy the complex's dining, entertainment and nightlife."
   },
   cover: "intercontinental/1-king-junior-suite-ocean-view-1.jpg",
@@ -307,7 +307,7 @@ export const intercontinental: Hotel = {
       category: "grand",
       name: "2 Twin Beds Classic Grand Golf View",
       description: {
-        ko: "푹신하고 편안한 트윈 침실과 47㎡의 넉넉한 공간, 대리석 더블 세면대, 바닥부터 천장까지 이어지는 통창을 갖춘 객실입니다. 높은 층에서 펼쳐지는 더 블러프스 골프 코스의 아름다운 파노라마 전망과 다양한 객실 내 편의시설을 누려 보세요.",
+        ko: "푹신하고 편안한 트윈 침실과 47㎡의 넉넉한 공간, 대리석 더블 세면대, 바닥부터 천장까지 이어지는 통창을 갖춘 객실입니다. 높은 층에서 펼쳐지는 더 블러프 골프 코스의 아름다운 파노라마 전망과 다양한 객실 내 편의시설을 누려 보세요.",
         en: "Features plush and comfortable Twin bedroom with 47 sqm living space plus double marble vanities and floor to ceiling windows. Enjoy beautiful panoramic views of The Bluffs golf course on higher floors together with a wide variety of in-room amenities."
       },
       size: "47 m²",
@@ -350,7 +350,7 @@ export const intercontinental: Hotel = {
       category: "grand",
       name: "1 King Bed Classic Grand Golf View",
       description: {
-        ko: "푹신하고 편안한 킹 침실과 47㎡의 넉넉한 공간, 대리석 더블 세면대, 바닥부터 천장까지 이어지는 통창을 갖춘 객실입니다. 높은 층에서 펼쳐지는 더 블러프스 골프 코스의 아름다운 파노라마 전망과 다양한 객실 내 편의시설을 누려 보세요.",
+        ko: "푹신하고 편안한 킹 침실과 47㎡의 넉넉한 공간, 대리석 더블 세면대, 바닥부터 천장까지 이어지는 통창을 갖춘 객실입니다. 높은 층에서 펼쳐지는 더 블러프 골프 코스의 아름다운 파노라마 전망과 다양한 객실 내 편의시설을 누려 보세요.",
         en: "Features plush and comfortable King bedroom with 47 sqm living space plus double marble vanities and floor to ceiling windows. Enjoy beautiful panoramic views of The Bluffs golf course on higher floors together with a wide variety of in-room amenities."
       },
       size: "47 m²",
@@ -394,7 +394,7 @@ export const intercontinental: Hotel = {
       category: "suite",
       name: "1 King 2 Single 2 Bedroom Royal Suite",
       description: {
-        ko: "럭셔리와 편안함이 우아하게 어우러진 로열 스위트는 프라이버시와 특별함을 원하는 가족이나 소규모 그룹에게 잘 어울립니다. 186㎡, 침실 2개로 구성되며 킹 침실과 트윈 침실 각 1개, 화려한 거실, 바다가 한눈에 내려다보이는 통창을 갖추고 있습니다. 로열 스위트 투숙객은 전용 VIP 체크인과 더 그랜드 라운지 특별 이용 혜택을 누릴 수 있습니다.",
+        ko: "럭셔리와 편안함이 우아하게 어우러진 로열 스위트는 프라이버시와 특별함을 원하는 가족이나 소규모 그룹에게 잘 어울립니다. 186㎡, 침실 2개로 구성되며 킹 침실과 트윈 침실 각 1개, 화려한 거실, 바다가 한눈에 내려다보이는 통창을 갖추고 있습니다. 로열 스위트 투숙객은 전용 VIP 체크인과 그랜드 라운지 특별 이용 혜택을 누릴 수 있습니다.",
         en: "An elegant blend of luxury and comfort, the Royal Suite is perfect for families or small groups seeking privacy and exclusivity. This 2-bedroom 186 sqm suite comes with one king and one twin bedroom, an opulent living room and floor-to-ceiling windows offering spectacular views over the ocean. The Royal Suite guests are also entitled with a private VIP check-in and receive special access to The Grand Lounge."
       },
       size: "186 m²",
@@ -484,7 +484,7 @@ export const intercontinental: Hotel = {
       category: "suite",
       name: "1 King 1 Bedroom Suite Grand Golf View",
       description: {
-        ko: "더 블러프스 골프 코스의 파노라마 전망이 펼쳐지는 통창을 갖춘 143㎡ 규모의 스위트입니다. 특별한 어메니티와 넓은 침실, 거실, 다이닝 룸, 바 카운터가 마련되어 있습니다.",
+        ko: "더 블러프 골프 코스의 파노라마 전망이 펼쳐지는 통창을 갖춘 143㎡ 규모의 스위트입니다. 특별한 어메니티와 넓은 침실, 거실, 다이닝 룸, 바 카운터가 마련되어 있습니다.",
         en: "Features 143 sqm of living space including floor to ceiling windows overlooking the panoramic view of The Bluffs golf course. Special amenities plus a spacious bedroom. A living room. A dining room. A bar counter."
       },
       size: "143 m²",
@@ -570,7 +570,7 @@ export const intercontinental: Hotel = {
       category: "suite",
       name: "1 King 1 Bedroom Suite Golf View",
       description: {
-        ko: "더 블러프스 골프 코스가 내려다보이는 통창을 갖춘 99㎡ 규모의 스위트입니다. 특별한 어메니티와 넓은 침실, 거실, 대리석 바닥 욕실이 있으며 욕실에는 레인 샤워기와 깊은 독립형 욕조가 있습니다.",
+        ko: "더 블러프 골프 코스가 내려다보이는 통창을 갖춘 99㎡ 규모의 스위트입니다. 특별한 어메니티와 넓은 침실, 거실, 대리석 바닥 욕실이 있으며 욕실에는 레인 샤워기와 깊은 독립형 욕조가 있습니다.",
         en: "Features 99 sqm of living space including floor to ceiling windows overlooking the view of The Bluffs golf course. Special amenities plus a spacious bedroom. A living room and a bathroom with marble flooring. Rainshower and deep standalone bathtubs."
       },
       size: "99 m²",

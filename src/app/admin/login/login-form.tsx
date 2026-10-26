@@ -49,7 +49,7 @@ export function LoginForm() {
         <div>
           <h1 className="text-lg font-semibold text-fg">관리자 로그인</h1>
           <p className="mt-1 text-sm text-fg-muted">
-            THE GRAND 내부 관리자 페이지입니다.
+            The Concierge Ho Tram 내부 관리자 페이지입니다.
           </p>
         </div>
       </div>

@@ -1,6 +1,9 @@
 import Image from "next/image";
 import { Check } from "lucide-react";
 import { setRequestLocale } from "next-intl/server";
+import { getGolfSheet } from "@/lib/golf-rates";
+import { GolfMemberIntro, GolfRates } from "@/components/golf/golf-rates";
+import { PRICES_VISIBLE } from "@/lib/features";
 import { Container } from "@/components/site/container";
 import { Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal";
 import {
@@ -15,6 +18,8 @@ import {
   golfText,
 } from "@/data/golf";
 
+export const dynamic = "force-dynamic";
+
 export async function generateMetadata({
   params,
 }: {
@@ -23,7 +28,7 @@ export async function generateMetadata({
   const { locale } = await params;
   const isKo = locale === "ko";
   return {
-    title: isKo ? "더 블러프스 골프" : "The Bluffs Golf",
+    title: isKo ? "더 블러프 골프" : "The Bluffs Golf",
     description: golfText(GOLF_HERO.subtitle, locale),
   };
 }
@@ -35,6 +40,7 @@ export default async function GolfPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const sheet = PRICES_VISIBLE ? await getGolfSheet() : null;
   const t = (v: Parameters<typeof golfText>[0]) => golfText(v, locale);
   const alt = (key: keyof typeof GOLF_UI.imageAlts) => t(GOLF_UI.imageAlts[key]);
   const title = GOLF_HERO.title[locale === "ko" ? "ko" : "en"];
@@ -128,6 +134,8 @@ export default async function GolfPage({
           </Reveal>
         </Container>
       </section>
+
+      {PRICES_VISIBLE ? sheet && <GolfRates sheet={sheet} locale={locale} /> : <GolfMemberIntro locale={locale} />}
 
       {/* Recognition */}
       <section className="border-t border-border py-20 sm:py-24">

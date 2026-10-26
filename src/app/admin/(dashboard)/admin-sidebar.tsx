@@ -8,6 +8,7 @@ import {
   LayoutDashboard,
   LogOut,
   MessageSquare,
+  UserPlus,
   Users,
   type LucideIcon,
 } from "lucide-react";
@@ -26,6 +27,7 @@ const NAV: NavItem[] = [
   { href: "/admin/events", label: "이벤트 관리", icon: CalendarRange },
   { href: "/admin/hotel-types", label: "호텔 타입", icon: BedDouble },
   { href: "/admin/reservations", label: "예약 요청", icon: Users },
+  { href: "/admin/memberships", label: "통합 문의", icon: UserPlus },
   ...(CONSULT_ENABLED
     ? [{ href: "/admin/consultations", label: "AI 상담 로그", icon: MessageSquare }]
     : []),
@@ -46,7 +48,7 @@ export function AdminSidebar({ adminId }: { adminId: string }) {
       <div>
         <div className="mb-8 px-2">
           <p className="text-sm font-semibold tracking-[0.18em] text-fg">
-            THE GRAND
+            THE CONCIERGE
           </p>
           <p className="mt-0.5 text-xs text-fg-subtle">관리자 대시보드</p>
         </div>
