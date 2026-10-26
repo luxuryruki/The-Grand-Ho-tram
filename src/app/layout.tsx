@@ -2,12 +2,15 @@ import type { Metadata } from "next";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import "./globals.css";
+import { getSiteUrl } from "@/lib/site-url";
 
 // next/font/google 대신 geist 패키지(자체 호스팅 폰트 파일 내장)를 사용합니다.
 // 빌드 시 Google Fonts로 외부 네트워크 요청을 하지 않아, 아웃바운드 네트워크가
 // 제한된 환경(사내망, 일부 CI 등)에서도 빌드가 안정적으로 동작합니다.
 
 export const metadata: Metadata = {
+  // 링크 미리보기 이미지 등 상대 경로를 절대 주소로 바꿀 때의 기준 주소
+  metadataBase: getSiteUrl(),
   title: {
     default: "THE CONCIERGE HO TRAM",
     template: "%s · THE CONCIERGE HO TRAM",
