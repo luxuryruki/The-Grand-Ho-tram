@@ -5,10 +5,11 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, ImagePlus, Trash2 } from "lucide-react";
 import { todayKst } from "@/lib/events";
+import { shrinkImage } from "@/lib/shrink-image";
 import { EMPTY_EVENT_VALUES, EventFields, toEventPayload, type EventFormValues } from "../event-fields";
 
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
-const MAX_FILE_SIZE = 8 * 1024 * 1024; // 서버 제한(8MB)과 같게
+const MAX_FILE_SIZE = 30 * 1024 * 1024; // 원본 한도. 4.5MB를 넘는 이미지는 올리기 전에 자동으로 줄입니다.
 
 type Picked = { key: string; file: File; preview: string };
 
@@ -35,7 +36,7 @@ export default function NewEventPage() {
     const rejected: string[] = [];
     for (const file of Array.from(list)) {
       if (!ALLOWED_TYPES.includes(file.type)) rejected.push(`${file.name} (jpg, png, webp, gif만 가능)`);
-      else if (file.size > MAX_FILE_SIZE) rejected.push(`${file.name} (8MB 초과)`);
+      else if (file.size > MAX_FILE_SIZE) rejected.push(`${file.name} (30MB 초과)`);
       else {
         const preview = URL.createObjectURL(file);
         previewsRef.current.push(preview);
@@ -82,7 +83,7 @@ export default function NewEventPage() {
       for (const p of picked) {
         if (done.has(p.key)) continue;
         const body = new FormData();
-        body.append("file", p.file);
+        body.append("file", await shrinkImage(p.file));
         const up = await fetch(`/api/admin/events/${id}/images`, { method: "POST", body }).catch(() => null);
         if (up?.ok) {
           done.add(p.key);

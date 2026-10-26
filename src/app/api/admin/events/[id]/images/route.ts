@@ -59,8 +59,10 @@ export async function POST(
     return NextResponse.json({ image }, { status: 201 });
   } catch (err) {
     console.error("[admin/events/images] upload failed", err);
+    // 관리자 전용 API라서 원인(환경변수 누락, Storage 오류 등)을 화면에서 바로 볼 수 있게 함께 돌려줍니다.
+    const reason = err instanceof Error ? err.message : String(err);
     return NextResponse.json(
-      { error: "이미지 업로드 중 오류가 발생했습니다. Supabase Storage 설정을 확인해주세요." },
+      { error: `이미지 업로드 중 오류가 발생했습니다. (${reason})` },
       { status: 500 }
     );
   }
