@@ -9,6 +9,9 @@ import { HtmlLangSync } from "@/components/site/html-lang-sync";
 import { ConsultProvider } from "@/components/consult/consult-provider";
 import { ConsultWidget } from "@/components/consult/consult-widget";
 import { CONSULT_ENABLED, ENGLISH_ENABLED } from "@/lib/features";
+import { JsonLd } from "@/components/seo/json-ld";
+import { KAKAO_CHAT_URL } from "@/lib/contact";
+import { absUrl, SITE_NAME_KO } from "@/lib/seo";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -74,6 +77,32 @@ export default async function LocaleLayout({
 
   return (
     <NextIntlClientProvider messages={messages}>
+      <JsonLd
+        data={[
+          {
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            name: SITE_NAME_KO,
+            alternateName: "The Concierge Ho Tram",
+            url: absUrl("/"),
+            logo: absUrl("/brand/logo.png"),
+            description: "호짬 리조트의 호텔·골프를 한국어로 안내하고 문의를 받는 독립 안내 서비스입니다.",
+            contactPoint: {
+              "@type": "ContactPoint",
+              contactType: "customer service",
+              url: KAKAO_CHAT_URL,
+              availableLanguage: "Korean",
+            },
+          },
+          {
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            name: SITE_NAME_KO,
+            url: absUrl("/"),
+            inLanguage: "ko-KR",
+          },
+        ]}
+      />
       <HtmlLangSync locale={locale} />
       <ConsultProvider>
         <div className="flex min-h-screen flex-col">

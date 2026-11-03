@@ -21,6 +21,8 @@ import { buildHotelOptions } from "@/data/hotels/hotel-options";
 import { parseIsoDate } from "@/lib/pricing";
 import { PRICES_VISIBLE } from "@/lib/features";
 import { getPublicRateBook } from "@/lib/rates";
+import { JsonLd } from "@/components/seo/json-ld";
+import { absUrl, breadcrumbLd, clip, HOTEL_KO_NAME } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 
@@ -37,9 +39,14 @@ export async function generateMetadata({
   const hotel = getHotel(hotelId);
   const room = hotel && getRoom(hotel, slug);
   if (!hotel || !room) return {};
+  const koName = HOTEL_KO_NAME[hotel.id] ?? hotel.name;
   return {
-    title: `${room.name} · ${hotel.name}`,
-    description: pickText(room.description, locale),
+    title: `${room.name} · ${koName} 객실`,
+    description: clip(
+      `${koName} ${room.name} 객실 안내. ${pickText(room.description, locale)} 호짬 호텔 예약 문의는 카카오톡으로 남겨 주세요.`,
+      150
+    ),
+    alternates: { canonical: `/hotels/${hotel.id}/rooms/${room.slug}` },
   };
 }
 
@@ -98,8 +105,33 @@ export default async function RoomPage({
     { key: "equipment", title: t("equipmentTitle"), items: amenities.equipment },
   ].filter((g) => g.items.length > 0);
 
+  const koName = HOTEL_KO_NAME[hotel.id] ?? hotel.name;
+  const sizeValue = Number.parseFloat(room.size);
+
   return (
     <Container className="py-16 sm:py-24">
+      <JsonLd
+        data={[
+          {
+            "@context": "https://schema.org",
+            "@type": "HotelRoom",
+            name: room.name,
+            description: pickText(room.description, locale),
+            image: absUrl(hotelImageSrc(room.images[0])),
+            url: absUrl(`/hotels/${hotel.id}/rooms/${room.slug}`),
+            ...(Number.isFinite(sizeValue) && /^\d/.test(room.size)
+              ? { floorSize: { "@type": "QuantitativeValue", value: sizeValue, unitCode: "MTK" } }
+              : {}),
+            containedInPlace: { "@type": "Hotel", name: koName, url: absUrl(`/hotels/${hotel.id}`) },
+          },
+          breadcrumbLd([
+            { name: "홈", path: "/" },
+            { name: "호텔", path: "/hotels" },
+            { name: koName, path: `/hotels/${hotel.id}` },
+            { name: room.name, path: `/hotels/${hotel.id}/rooms/${room.slug}` },
+          ]),
+        ]}
+      />
       <Reveal>
         <Link
           href={`/hotels/${hotel.id}`}

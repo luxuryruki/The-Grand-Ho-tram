@@ -10,6 +10,8 @@ import { HotelRoomBrowser } from "@/components/hotels/hotel-room-browser";
 import { getHotel, hotelImageSrc, pickText } from "@/data/hotels";
 import { buildHotelOptions } from "@/data/hotels/hotel-options";
 import { getPublicRateBook } from "@/lib/rates";
+import { JsonLd } from "@/components/seo/json-ld";
+import { absUrl, breadcrumbLd, clip, HOTEL_KO_NAME } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 
@@ -21,7 +23,15 @@ export async function generateMetadata({
   const { locale, hotel: hotelId } = await params;
   const hotel = getHotel(hotelId);
   if (!hotel) return {};
-  return { title: hotel.name, description: pickText(hotel.description, locale) };
+  const koName = HOTEL_KO_NAME[hotel.id] ?? hotel.name;
+  return {
+    title: `${koName} 객실·시설 안내`,
+    description: clip(
+      `${koName} 객실 ${hotel.rooms.length}종과 시설 안내. ${pickText(hotel.tagline, locale)}. 호짬 호텔 예약과 객실 문의는 카카오톡으로 편하게 남겨 주세요.`,
+      150
+    ),
+    alternates: { canonical: `/hotels/${hotel.id}` },
+  };
 }
 
 export default async function HotelPage({
@@ -37,9 +47,32 @@ export default async function HotelPage({
   const t = await getTranslations({ locale, namespace: "hotels" });
   const book = await getPublicRateBook();
   const option = buildHotelOptions(locale, book).find((h) => h.id === hotel.id)!;
+  const koName = HOTEL_KO_NAME[hotel.id] ?? hotel.name;
 
   return (
     <Container className="py-16 sm:py-24">
+      <JsonLd
+        data={[
+          {
+            "@context": "https://schema.org",
+            "@type": "Hotel",
+            name: koName,
+            alternateName: hotel.name,
+            description: pickText(hotel.description, locale),
+            image: absUrl(hotelImageSrc(hotel.cover)),
+            url: absUrl(`/hotels/${hotel.id}`),
+            address: { "@type": "PostalAddress", addressLocality: "Ho Tram", addressCountry: "VN" },
+            ...(hotel.checkIn ? { checkinTime: hotel.checkIn } : {}),
+            ...(hotel.checkOut ? { checkoutTime: hotel.checkOut } : {}),
+            numberOfRooms: hotel.rooms.length,
+          },
+          breadcrumbLd([
+            { name: "홈", path: "/" },
+            { name: "호텔", path: "/hotels" },
+            { name: koName, path: `/hotels/${hotel.id}` },
+          ]),
+        ]}
+      />
       <Reveal>
         <Link
           href="/hotels"
