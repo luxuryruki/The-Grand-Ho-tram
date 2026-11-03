@@ -6,6 +6,8 @@ import { MemberNotice } from "@/components/membership/member-notice";
 import { PriceDisclaimer } from "@/components/pricing/price-disclaimer";
 import { HOTELS } from "@/data/hotels";
 import { PRICES_VISIBLE } from "@/lib/features";
+import { JsonLd } from "@/components/seo/json-ld";
+import { absUrl, HOTEL_KO_NAME } from "@/lib/seo";
 import { getPublicRateBook } from "@/lib/rates";
 
 export const dynamic = "force-dynamic";
@@ -15,9 +17,13 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string }>;
 }) {
-  const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "hotels" });
-  return { title: t("pageTitle") };
+  await params;
+  return {
+    title: "호짬 호텔 예약 · 객실 비교",
+    description:
+      "호짬 리조트의 인터컨티넨탈 그랜드 호짬, 홀리데이 인 리조트 호짬 비치, 익소라 호짬. 세 호텔의 객실 종류와 시설을 한눈에 비교하고 호텔 예약 문의는 카카오톡으로 남겨 주세요.",
+    alternates: { canonical: "/hotels" },
+  };
 }
 
 export default async function HotelsPage({
@@ -39,6 +45,19 @@ export default async function HotelsPage({
 
   return (
     <Container className="py-16 sm:py-24">
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          name: "호짬 호텔 목록",
+          itemListElement: HOTELS.map((h, i) => ({
+            "@type": "ListItem",
+            position: i + 1,
+            name: HOTEL_KO_NAME[h.id] ?? h.name,
+            url: absUrl(`/hotels/${h.id}`),
+          })),
+        }}
+      />
       <Reveal>
         <h1 className="text-3xl font-semibold text-fg sm:text-4xl">
           {t("pageTitle")}

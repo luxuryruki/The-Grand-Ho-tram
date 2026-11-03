@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import { ImageOff } from "lucide-react";
 import { getTranslations } from "next-intl/server";
@@ -8,8 +9,39 @@ import { LinkButton } from "@/components/ui/button";
 import { prisma } from "@/lib/prisma";
 import { publicEventWhere } from "@/lib/events";
 import { formatEventDate } from "@/lib/utils";
+import { clip, SITE_NAME_KO } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string; id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const event = await prisma.event.findFirst({
+    where: { id, ...publicEventWhere() },
+    include: { images: { orderBy: { order: "asc" }, take: 1 } },
+  });
+  if (!event) return { title: "이벤트를 찾을 수 없습니다", robots: { index: false } };
+  const description = clip(event.description, 150);
+  const poster = event.images[0]?.url;
+  return {
+    title: event.title,
+    description,
+    alternates: { canonical: `/events/${event.id}` },
+    // 카카오톡 등으로 이 이벤트 링크를 공유하면 포스터가 미리보기로 나옵니다.
+    openGraph: {
+      type: "article",
+      siteName: SITE_NAME_KO,
+      title: event.title,
+      description,
+      locale: "ko_KR",
+      ...(poster ? { images: [{ url: poster, alt: event.title }] } : { images: [{ url: "/og/main.jpg", width: 1200, height: 630 }] }),
+    },
+    twitter: { card: "summary_large_image", title: event.title, description, images: [poster ?? "/og/main.jpg"] },
+  };
+}
 
 export default async function EventDetailPage({
   params,

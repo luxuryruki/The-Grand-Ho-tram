@@ -4,6 +4,8 @@ import { setRequestLocale } from "next-intl/server";
 import { getGolfSheet } from "@/lib/golf-rates";
 import { GolfMemberIntro, GolfRates } from "@/components/golf/golf-rates";
 import { PRICES_VISIBLE } from "@/lib/features";
+import { JsonLd } from "@/components/seo/json-ld";
+import { absUrl, breadcrumbLd } from "@/lib/seo";
 import { Container } from "@/components/site/container";
 import { Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal";
 import {
@@ -28,8 +30,11 @@ export async function generateMetadata({
   const { locale } = await params;
   const isKo = locale === "ko";
   return {
-    title: isKo ? "더 블러프 골프" : "The Bluffs Golf",
-    description: golfText(GOLF_HERO.subtitle, locale),
+    title: isKo ? "호짬 골프 · 더 블러프 안내" : "The Bluffs Golf",
+    description: isKo
+      ? "호짬 해안의 18홀 링크스 코스 더 블러프. 그렉 노먼이 설계한 코스와 연습 시설, 클럽하우스 정보를 소개하고 호짬 골프 라운드 문의를 받습니다."
+      : golfText(GOLF_HERO.subtitle, locale),
+    alternates: { canonical: "/golf" },
   };
 }
 
@@ -49,6 +54,25 @@ export default async function GolfPage({
 
   return (
     <div>
+      <JsonLd
+        data={[
+          {
+            "@context": "https://schema.org",
+            "@type": "GolfCourse",
+            name: "더 블러프 (The Bluffs Ho Tram)",
+            description:
+              "호짬 해안의 18홀 링크스 골프 코스. 그렉 노먼이 설계했습니다.",
+            image: absUrl(GOLF_IMAGES.hero),
+            url: absUrl("/golf"),
+            address: { "@type": "PostalAddress", addressLocality: "Ho Tram", addressCountry: "VN" },
+            numberOfHoles: 18,
+          },
+          breadcrumbLd([
+            { name: "홈", path: "/" },
+            { name: "골프", path: "/golf" },
+          ]),
+        ]}
+      />
       {/* Hero: 우측 사진, 좌측으로 흐려지는 그라데이션 */}
       <section className="relative overflow-hidden">
         <div className="pointer-events-none absolute inset-y-0 right-0 w-full lg:w-[68%]">

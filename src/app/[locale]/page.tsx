@@ -16,6 +16,13 @@ import { HighlightIcon } from "@/components/home/highlight-icon";
 // 이벤트 목록이 관리자 대시보드에서 실시간으로 바뀌므로 매 요청마다 새로 렌더링합니다.
 export const dynamic = "force-dynamic";
 
+export const metadata = {
+  title: { absolute: "호짬 호텔·골프 안내 | 더 컨시어지 호짬" },
+  description:
+    "호짬 리조트의 호텔 3곳(인터컨티넨탈·홀리데이 인·익소라)과 더 블러프 골프를 한국어로 안내합니다. 호짬 호텔 예약, 골프 라운드, 차량 문의를 카카오톡으로 편하게 문의하세요.",
+  alternates: { canonical: "/" },
+};
+
 export default async function HomePage({
   params,
 }: {

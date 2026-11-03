@@ -9,8 +9,11 @@ import { publicEventWhere, sortEventsByProximity } from "@/lib/events";
 export const dynamic = "force-dynamic";
 
 export async function generateMetadata() {
-  const t = await getTranslations("events");
-  return { title: t("pageTitle") };
+  return {
+    title: "호짬 호텔·골프 이벤트 · 프로모션",
+    description: "호짬 리조트 호텔과 골프 관련 이벤트·프로모션 소식을 한곳에 모아 안내합니다. 진행 중인 이벤트와 곧 시작하는 이벤트를 확인하세요.",
+    alternates: { canonical: "/events" },
+  };
 }
 
 export default async function EventsPage({
