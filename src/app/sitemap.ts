@@ -11,7 +11,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = getSiteUrl().origin;
   const now = new Date();
 
-  // 카지노 시설 안내 페이지는 일부러 사이트맵에 넣지 않습니다(검색 노출 대상에서 제외).
   const pages: MetadataRoute.Sitemap = [
     { url: `${base}/`, lastModified: now, changeFrequency: "weekly", priority: 1 },
     { url: `${base}/hotels`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
@@ -25,6 +24,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       })),
     ]),
     { url: `${base}/golf`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${base}/casino`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
     { url: `${base}/events`, lastModified: now, changeFrequency: "daily", priority: 0.8 },
     { url: `${base}/inquiry`, lastModified: now, changeFrequency: "yearly", priority: 0.5 },
   ];
